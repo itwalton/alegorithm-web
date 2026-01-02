@@ -15,11 +15,14 @@ import {
   useTheme,
   useMediaQuery,
   IconButton,
+  Tooltip,
 } from '@mui/material'
 import {
   Menu as MenuIcon,
   Home as HomeIcon,
   Inventory as InventoryIcon,
+  Settings as SettingsIcon,
+  Logout as LogoutIcon,
 } from '@mui/icons-material'
 import { GiWheat, GiHops } from 'react-icons/gi'
 import { MdScience } from 'react-icons/md'
@@ -164,9 +167,36 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 A
               </Typography>
             </Box>
-            <Typography variant="h6" noWrap component="div">
-              Alegorithm
-            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Tooltip title="Settings">
+              <IconButton
+                color="inherit"
+                aria-label="settings"
+                sx={{
+                  color: theme.palette.text.primary,
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                  }
+                }}
+              >
+                <SettingsIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Logout">
+              <IconButton
+                color="inherit"
+                aria-label="logout"
+                sx={{
+                  color: theme.palette.text.primary,
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                  }
+                }}
+              >
+                <LogoutIcon />
+              </IconButton>
+            </Tooltip>
           </Box>
         </Toolbar>
       </AppBar>
