@@ -35,14 +35,6 @@ interface NavItem {
   color?: string
 }
 
-const navItems: NavItem[] = [
-  { label: 'Home', path: '/', icon: <HomeIcon /> },
-  { label: 'Inventory', path: '/inventory', icon: <InventoryIcon /> },
-  { label: 'Fermentables', path: '/inventory/fermentables', icon: <GiWheat />, indent: true, color: '#ffff00' },
-  { label: 'Hops', path: '/inventory/hops', icon: <GiHops />, indent: true, color: '#00ff41' },
-  { label: 'Chemicals', path: '/inventory/materials', icon: <MdScience />, indent: true, color: '#64b5f6' },
-]
-
 interface AppLayoutProps {
   children: ReactNode
 }
@@ -52,6 +44,14 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const location = useLocation()
+
+  const navItems: NavItem[] = [
+    { label: 'Home', path: '/', icon: <HomeIcon /> },
+    { label: 'Inventory', path: '/inventory', icon: <InventoryIcon /> },
+    { label: 'Fermentables', path: '/inventory/fermentables', icon: <GiWheat />, indent: true, color: theme.palette.secondary.main },
+    { label: 'Hops', path: '/inventory/hops', icon: <GiHops />, indent: true, color: theme.palette.primary.main },
+    { label: 'Chemicals', path: '/inventory/materials', icon: <MdScience />, indent: true, color: theme.palette.info.main },
+  ]
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
@@ -147,17 +147,20 @@ export default function AppLayout({ children }: AppLayoutProps) {
               sx={{
                 width: 40,
                 height: 40,
-                backgroundColor: '#0a0a0a',
-                border: '2px solid #00ff41',
+                backgroundColor: theme.palette.background.paper,
+                border: `2px solid ${theme.palette.primary.main}`,
                 borderRadius: 1,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 mr: 2,
-                boxShadow: '0 0 15px #00ff41',
+                boxShadow: `0 0 15px ${theme.palette.primary.main}`,
               }}
             >
-              <Typography variant="h6" sx={{ color: '#00ff41', textShadow: '0 0 10px #00ff41' }}>
+              <Typography variant="h6" sx={{
+                color: theme.palette.primary.main,
+                textShadow: `0 0 10px ${theme.palette.primary.main}`
+              }}>
                 A
               </Typography>
             </Box>

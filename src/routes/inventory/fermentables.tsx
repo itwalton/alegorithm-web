@@ -1,10 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Typography, Box } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 function FermentablesPage() {
+  const theme = useTheme()
+
   return (
     <Box>
-      <Typography variant="h4" gutterBottom sx={{ color: '#ffff00' }}>
+      <Typography variant="h4" gutterBottom sx={{ color: theme.palette.secondary.main }}>
         Fermentables
       </Typography>
       <Typography variant="body1">

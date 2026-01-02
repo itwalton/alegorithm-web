@@ -1,10 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Typography, Box } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 function ChemicalsPage() {
+  const theme = useTheme()
+
   return (
     <Box>
-      <Typography variant="h4" gutterBottom sx={{ color: '#64b5f6' }}>
+      <Typography variant="h4" gutterBottom sx={{ color: theme.palette.info.main }}>
         Chemicals
       </Typography>
       <Typography variant="body1">

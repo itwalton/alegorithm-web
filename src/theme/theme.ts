@@ -61,45 +61,52 @@ export const theme = createTheme({
       light: "#ff9999",
       dark: "#cc5555",
     },
+    info: {
+      main: "#64b5f6", // Soft blue
+      light: "#90caf9",
+      dark: "#42a5f5",
+    },
     background: {
-      default: "#0a0a0a",
-      paper: "#1a1a1a",
+      default: "#0d0d0d", // Darker background like Linear
+      paper: "#181818", // Slightly lighter for cards/papers
     },
     text: {
-      primary: "#00ff41",
-      secondary: "#ffff00",
+      primary: "#f5f5f5", // Off-white for readability
+      secondary: "#a8a8a8", // Subtle gray for secondary text
     },
   },
   components: {
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: "#0a0a0a",
-          borderBottom: "1px solid #00ff41",
+          backgroundColor: "#0d0d0d",
+          borderBottom: "1px solid #262626",
+          backdropFilter: "blur(8px)",
         },
       },
     },
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          backgroundColor: "#0a0a0a",
-          borderRight: "1px solid #00ff41",
+          backgroundColor: "#0d0d0d",
+          borderRight: "1px solid #262626",
         },
       },
     },
     MuiListItemButton: {
       styleOverrides: {
         root: {
-          color: "#ffffff",
+          color: "#f5f5f5",
+          borderRadius: "6px",
+          margin: "2px 8px",
           "&:hover": {
-            backgroundColor: "rgba(0, 255, 65, 0.1)",
-            color: "#00ff41",
+            backgroundColor: "#262626",
           },
           "&.Mui-selected": {
-            backgroundColor: "rgba(0, 255, 65, 0.2)",
-            color: "#00ff41",
+            backgroundColor: "#1a1a1a",
+            borderLeft: "2px solid",
             "&:hover": {
-              backgroundColor: "rgba(0, 255, 65, 0.3)",
+              backgroundColor: "#262626",
             },
           },
         },
