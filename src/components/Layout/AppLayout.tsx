@@ -21,6 +21,8 @@ import {
   Home as HomeIcon,
   Inventory as InventoryIcon,
 } from '@mui/icons-material'
+import { GiWheat, GiHops } from 'react-icons/gi'
+import { MdScience } from 'react-icons/md'
 import { Link, useLocation } from '@tanstack/react-router'
 
 const drawerWidth = 240
@@ -29,11 +31,16 @@ interface NavItem {
   label: string
   path: string
   icon: ReactNode
+  indent?: boolean
+  color?: string
 }
 
 const navItems: NavItem[] = [
   { label: 'Home', path: '/', icon: <HomeIcon /> },
   { label: 'Inventory', path: '/inventory', icon: <InventoryIcon /> },
+  { label: 'Fermentables', path: '/inventory/fermentables', icon: <GiWheat />, indent: true, color: '#ffff00' },
+  { label: 'Hops', path: '/inventory/hops', icon: <GiHops />, indent: true, color: '#00ff41' },
+  { label: 'Chemicals', path: '/inventory/materials', icon: <MdScience />, indent: true, color: '#64b5f6' },
 ]
 
 interface AppLayoutProps {
@@ -66,9 +73,48 @@ export default function AppLayout({ children }: AppLayoutProps) {
               to={item.path}
               selected={location.pathname === item.path}
               onClick={() => isMobile && setMobileOpen(false)}
+              sx={{
+                pl: item.indent ? 4 : 2,
+                '&:hover': item.color ? {
+                  backgroundColor: `${item.color}20`,
+                  color: item.color,
+                  '& .MuiListItemIcon-root': {
+                    color: item.color,
+                  }
+                } : {},
+                '&.Mui-selected': item.color ? {
+                  backgroundColor: `${item.color}30`,
+                  color: item.color,
+                  '& .MuiListItemIcon-root': {
+                    color: item.color,
+                  },
+                  '&:hover': {
+                    backgroundColor: `${item.color}40`,
+                  }
+                } : {}
+              }}
             >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.label} />
+              <ListItemIcon sx={{
+                minWidth: item.indent ? 36 : 56,
+                color: item.color || 'inherit',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={item.label}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  '& .MuiTypography-root': {
+                    fontSize: item.indent ? '0.875rem' : '1rem',
+                    color: item.color || 'inherit',
+                    lineHeight: 1
+                  }
+                }}
+              />
             </ListItemButton>
           </ListItem>
         ))}

@@ -11,6 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as InventoryIndexRouteImport } from './routes/inventory/index'
+import { Route as InventoryMaterialsRouteImport } from './routes/inventory/materials'
+import { Route as InventoryHopsRouteImport } from './routes/inventory/hops'
+import { Route as InventoryFermentablesRouteImport } from './routes/inventory/fermentables'
 
 const InventoryRoute = InventoryRouteImport.update({
   id: '/inventory',
@@ -22,31 +26,80 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InventoryIndexRoute = InventoryIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => InventoryRoute,
+} as any)
+const InventoryMaterialsRoute = InventoryMaterialsRouteImport.update({
+  id: '/materials',
+  path: '/materials',
+  getParentRoute: () => InventoryRoute,
+} as any)
+const InventoryHopsRoute = InventoryHopsRouteImport.update({
+  id: '/hops',
+  path: '/hops',
+  getParentRoute: () => InventoryRoute,
+} as any)
+const InventoryFermentablesRoute = InventoryFermentablesRouteImport.update({
+  id: '/fermentables',
+  path: '/fermentables',
+  getParentRoute: () => InventoryRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/inventory': typeof InventoryRoute
+  '/inventory': typeof InventoryRouteWithChildren
+  '/inventory/fermentables': typeof InventoryFermentablesRoute
+  '/inventory/hops': typeof InventoryHopsRoute
+  '/inventory/materials': typeof InventoryMaterialsRoute
+  '/inventory/': typeof InventoryIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/inventory': typeof InventoryRoute
+  '/inventory/fermentables': typeof InventoryFermentablesRoute
+  '/inventory/hops': typeof InventoryHopsRoute
+  '/inventory/materials': typeof InventoryMaterialsRoute
+  '/inventory': typeof InventoryIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/inventory': typeof InventoryRoute
+  '/inventory': typeof InventoryRouteWithChildren
+  '/inventory/fermentables': typeof InventoryFermentablesRoute
+  '/inventory/hops': typeof InventoryHopsRoute
+  '/inventory/materials': typeof InventoryMaterialsRoute
+  '/inventory/': typeof InventoryIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/inventory'
+  fullPaths:
+    | '/'
+    | '/inventory'
+    | '/inventory/fermentables'
+    | '/inventory/hops'
+    | '/inventory/materials'
+    | '/inventory/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/inventory'
-  id: '__root__' | '/' | '/inventory'
+  to:
+    | '/'
+    | '/inventory/fermentables'
+    | '/inventory/hops'
+    | '/inventory/materials'
+    | '/inventory'
+  id:
+    | '__root__'
+    | '/'
+    | '/inventory'
+    | '/inventory/fermentables'
+    | '/inventory/hops'
+    | '/inventory/materials'
+    | '/inventory/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  InventoryRoute: typeof InventoryRoute
+  InventoryRoute: typeof InventoryRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +118,58 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/inventory/': {
+      id: '/inventory/'
+      path: '/'
+      fullPath: '/inventory/'
+      preLoaderRoute: typeof InventoryIndexRouteImport
+      parentRoute: typeof InventoryRoute
+    }
+    '/inventory/materials': {
+      id: '/inventory/materials'
+      path: '/materials'
+      fullPath: '/inventory/materials'
+      preLoaderRoute: typeof InventoryMaterialsRouteImport
+      parentRoute: typeof InventoryRoute
+    }
+    '/inventory/hops': {
+      id: '/inventory/hops'
+      path: '/hops'
+      fullPath: '/inventory/hops'
+      preLoaderRoute: typeof InventoryHopsRouteImport
+      parentRoute: typeof InventoryRoute
+    }
+    '/inventory/fermentables': {
+      id: '/inventory/fermentables'
+      path: '/fermentables'
+      fullPath: '/inventory/fermentables'
+      preLoaderRoute: typeof InventoryFermentablesRouteImport
+      parentRoute: typeof InventoryRoute
+    }
   }
 }
 
+interface InventoryRouteChildren {
+  InventoryFermentablesRoute: typeof InventoryFermentablesRoute
+  InventoryHopsRoute: typeof InventoryHopsRoute
+  InventoryMaterialsRoute: typeof InventoryMaterialsRoute
+  InventoryIndexRoute: typeof InventoryIndexRoute
+}
+
+const InventoryRouteChildren: InventoryRouteChildren = {
+  InventoryFermentablesRoute: InventoryFermentablesRoute,
+  InventoryHopsRoute: InventoryHopsRoute,
+  InventoryMaterialsRoute: InventoryMaterialsRoute,
+  InventoryIndexRoute: InventoryIndexRoute,
+}
+
+const InventoryRouteWithChildren = InventoryRoute._addFileChildren(
+  InventoryRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  InventoryRoute: InventoryRoute,
+  InventoryRoute: InventoryRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
