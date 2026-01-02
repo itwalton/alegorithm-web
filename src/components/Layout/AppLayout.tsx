@@ -1,0 +1,166 @@
+import { useState, ReactNode } from 'react'
+import {
+  Box,
+  Drawer,
+  AppBar,
+  Toolbar,
+  List,
+  Typography,
+  Divider,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  CssBaseline,
+  useTheme,
+  useMediaQuery,
+  IconButton,
+} from '@mui/material'
+import {
+  Menu as MenuIcon,
+  Home as HomeIcon,
+  Inventory as InventoryIcon,
+} from '@mui/icons-material'
+import { Link, useLocation } from '@tanstack/react-router'
+
+const drawerWidth = 240
+
+interface NavItem {
+  label: string
+  path: string
+  icon: ReactNode
+}
+
+const navItems: NavItem[] = [
+  { label: 'Home', path: '/', icon: <HomeIcon /> },
+  { label: 'Inventory', path: '/inventory', icon: <InventoryIcon /> },
+]
+
+interface AppLayoutProps {
+  children: ReactNode
+}
+
+export default function AppLayout({ children }: AppLayoutProps) {
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const location = useLocation()
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen)
+  }
+
+  const drawer = (
+    <div>
+      <Toolbar>
+        <Typography variant="h6" noWrap component="div">
+          Alegorithm
+        </Typography>
+      </Toolbar>
+      <Divider />
+      <List>
+        {navItems.map((item) => (
+          <ListItem key={item.path} disablePadding>
+            <ListItemButton
+              component={Link}
+              to={item.path}
+              selected={location.pathname === item.path}
+              onClick={() => isMobile && setMobileOpen(false)}
+            >
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.label} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  )
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        sx={{
+          width: { md: `calc(100% - ${drawerWidth}px)` },
+          ml: { md: `${drawerWidth}px` },
+        }}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { md: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+            <Box
+              sx={{
+                width: 40,
+                height: 40,
+                backgroundColor: '#0a0a0a',
+                border: '2px solid #00ff41',
+                borderRadius: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mr: 2,
+                boxShadow: '0 0 15px #00ff41',
+              }}
+            >
+              <Typography variant="h6" sx={{ color: '#00ff41', textShadow: '0 0 10px #00ff41' }}>
+                A
+              </Typography>
+            </Box>
+            <Typography variant="h6" noWrap component="div">
+              Alegorithm
+            </Typography>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <Box
+        component="nav"
+        sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
+      >
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true,
+          }}
+          sx={{
+            display: { xs: 'block', md: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+        >
+          {drawer}
+        </Drawer>
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', md: 'block' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { md: `calc(100% - ${drawerWidth}px)` },
+        }}
+      >
+        <Toolbar />
+        {children}
+      </Box>
+    </Box>
+  )
+}
