@@ -2,6 +2,7 @@ import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
   typography: {
+    fontSize: 16,
     fontFamily: '"Gothic A1", "Roboto", "Helvetica", "Arial", sans-serif',
     h1: {
       fontFamily: '"Gothic A1", sans-serif',
