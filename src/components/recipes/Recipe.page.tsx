@@ -119,7 +119,11 @@ export default function RecipePage() {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom sx={{ color: theme.palette.primary.main }}>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{ color: theme.palette.primary.main }}
+      >
         Recipes
       </Typography>
       <Typography variant="body1" gutterBottom>

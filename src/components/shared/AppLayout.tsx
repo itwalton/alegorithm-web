@@ -18,7 +18,13 @@ import {
   Tooltip,
 } from '@mui/material';
 import { GiWheat, GiHops } from 'react-icons/gi';
-import { MdScience, MdInventory, MdLogout, MdMenuBook } from 'react-icons/md';
+import {
+  MdScience,
+  MdInventory,
+  MdLogout,
+  MdMenuBook,
+  MdCalendarToday,
+} from 'react-icons/md';
 import { HiMenu, HiHome, HiCog } from 'react-icons/hi';
 import { Link, useLocation } from '@tanstack/react-router';
 
@@ -45,6 +51,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const navItems: NavItem[] = [
     { label: 'Overview', path: '/', icon: <HiHome /> },
     { label: 'Recipes', path: '/recipes', icon: <MdMenuBook /> },
+    { label: 'Brew Days', path: '/brew-days', icon: <MdCalendarToday /> },
     { label: 'Inventory', path: '/inventory', icon: <MdInventory /> },
     {
       label: 'Fermentables',

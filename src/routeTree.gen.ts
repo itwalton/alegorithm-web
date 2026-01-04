@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RecipesRouteImport } from './routes/recipes'
 import { Route as InventoryRouteImport } from './routes/inventory'
+import { Route as BrewDaysRouteImport } from './routes/brew-days'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as InventoryIndexRouteImport } from './routes/inventory/index'
 import { Route as InventoryMaterialsRouteImport } from './routes/inventory/materials'
@@ -25,6 +26,11 @@ const RecipesRoute = RecipesRouteImport.update({
 const InventoryRoute = InventoryRouteImport.update({
   id: '/inventory',
   path: '/inventory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BrewDaysRoute = BrewDaysRouteImport.update({
+  id: '/brew-days',
+  path: '/brew-days',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -55,6 +61,7 @@ const InventoryFermentablesRoute = InventoryFermentablesRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/brew-days': typeof BrewDaysRoute
   '/inventory': typeof InventoryRouteWithChildren
   '/recipes': typeof RecipesRoute
   '/inventory/fermentables': typeof InventoryFermentablesRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/brew-days': typeof BrewDaysRoute
   '/recipes': typeof RecipesRoute
   '/inventory/fermentables': typeof InventoryFermentablesRoute
   '/inventory/hops': typeof InventoryHopsRoute
@@ -73,6 +81,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/brew-days': typeof BrewDaysRoute
   '/inventory': typeof InventoryRouteWithChildren
   '/recipes': typeof RecipesRoute
   '/inventory/fermentables': typeof InventoryFermentablesRoute
@@ -84,6 +93,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/brew-days'
     | '/inventory'
     | '/recipes'
     | '/inventory/fermentables'
@@ -93,6 +103,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/brew-days'
     | '/recipes'
     | '/inventory/fermentables'
     | '/inventory/hops'
@@ -101,6 +112,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/brew-days'
     | '/inventory'
     | '/recipes'
     | '/inventory/fermentables'
@@ -111,6 +123,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BrewDaysRoute: typeof BrewDaysRoute
   InventoryRoute: typeof InventoryRouteWithChildren
   RecipesRoute: typeof RecipesRoute
 }
@@ -129,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/inventory'
       fullPath: '/inventory'
       preLoaderRoute: typeof InventoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/brew-days': {
+      id: '/brew-days'
+      path: '/brew-days'
+      fullPath: '/brew-days'
+      preLoaderRoute: typeof BrewDaysRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -189,6 +209,7 @@ const InventoryRouteWithChildren = InventoryRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BrewDaysRoute: BrewDaysRoute,
   InventoryRoute: InventoryRouteWithChildren,
   RecipesRoute: RecipesRoute,
 }
