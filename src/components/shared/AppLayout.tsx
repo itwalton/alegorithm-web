@@ -17,15 +17,9 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
-import {
-  Menu as MenuIcon,
-  Home as HomeIcon,
-  Inventory as InventoryIcon,
-  Settings as SettingsIcon,
-  Logout as LogoutIcon,
-} from '@mui/icons-material';
 import { GiWheat, GiHops } from 'react-icons/gi';
-import { MdScience } from 'react-icons/md';
+import { MdScience, MdInventory, MdLogout } from 'react-icons/md';
+import { HiMenu, HiHome, HiCog } from 'react-icons/hi';
 import { Link, useLocation } from '@tanstack/react-router';
 
 const drawerWidth = 240;
@@ -49,8 +43,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const location = useLocation();
 
   const navItems: NavItem[] = [
-    { label: 'Overview', path: '/', icon: <HomeIcon /> },
-    { label: 'Inventory', path: '/inventory', icon: <InventoryIcon /> },
+    { label: 'Overview', path: '/', icon: <HiHome /> },
+    { label: 'Inventory', path: '/inventory', icon: <MdInventory /> },
     {
       label: 'Fermentables',
       path: '/inventory/fermentables',
@@ -167,7 +161,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { md: 'none' } }}
           >
-            <MenuIcon />
+            <HiMenu />
           </IconButton>
           <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
             <Box
@@ -207,7 +201,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                   },
                 }}
               >
-                <SettingsIcon />
+                <HiCog />
               </IconButton>
             </Tooltip>
             <Tooltip title="Logout">
@@ -221,7 +215,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                   },
                 }}
               >
-                <LogoutIcon />
+                <MdLogout />
               </IconButton>
             </Tooltip>
           </Box>
