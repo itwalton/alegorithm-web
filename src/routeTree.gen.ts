@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RecipesRouteImport } from './routes/recipes'
 import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as InventoryIndexRouteImport } from './routes/inventory/index'
@@ -16,6 +17,11 @@ import { Route as InventoryMaterialsRouteImport } from './routes/inventory/mater
 import { Route as InventoryHopsRouteImport } from './routes/inventory/hops'
 import { Route as InventoryFermentablesRouteImport } from './routes/inventory/fermentables'
 
+const RecipesRoute = RecipesRouteImport.update({
+  id: '/recipes',
+  path: '/recipes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InventoryRoute = InventoryRouteImport.update({
   id: '/inventory',
   path: '/inventory',
@@ -50,6 +56,7 @@ const InventoryFermentablesRoute = InventoryFermentablesRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/inventory': typeof InventoryRouteWithChildren
+  '/recipes': typeof RecipesRoute
   '/inventory/fermentables': typeof InventoryFermentablesRoute
   '/inventory/hops': typeof InventoryHopsRoute
   '/inventory/materials': typeof InventoryMaterialsRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/recipes': typeof RecipesRoute
   '/inventory/fermentables': typeof InventoryFermentablesRoute
   '/inventory/hops': typeof InventoryHopsRoute
   '/inventory/materials': typeof InventoryMaterialsRoute
@@ -66,6 +74,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/inventory': typeof InventoryRouteWithChildren
+  '/recipes': typeof RecipesRoute
   '/inventory/fermentables': typeof InventoryFermentablesRoute
   '/inventory/hops': typeof InventoryHopsRoute
   '/inventory/materials': typeof InventoryMaterialsRoute
@@ -76,6 +85,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/inventory'
+    | '/recipes'
     | '/inventory/fermentables'
     | '/inventory/hops'
     | '/inventory/materials'
@@ -83,6 +93,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/recipes'
     | '/inventory/fermentables'
     | '/inventory/hops'
     | '/inventory/materials'
@@ -91,6 +102,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/inventory'
+    | '/recipes'
     | '/inventory/fermentables'
     | '/inventory/hops'
     | '/inventory/materials'
@@ -100,10 +112,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   InventoryRoute: typeof InventoryRouteWithChildren
+  RecipesRoute: typeof RecipesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/recipes': {
+      id: '/recipes'
+      path: '/recipes'
+      fullPath: '/recipes'
+      preLoaderRoute: typeof RecipesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inventory': {
       id: '/inventory'
       path: '/inventory'
@@ -170,6 +190,7 @@ const InventoryRouteWithChildren = InventoryRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   InventoryRoute: InventoryRouteWithChildren,
+  RecipesRoute: RecipesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
