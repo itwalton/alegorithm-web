@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from '@mui/material/styles';
 
 export const theme = createTheme({
   typography: {
@@ -46,68 +46,68 @@ export const theme = createTheme({
     },
   },
   palette: {
-    mode: "dark",
+    mode: 'dark',
     primary: {
-      main: "#00ff41", // Neon green
-      light: "#66ff66",
-      dark: "#00cc33",
+      main: '#00ff41', // Neon green
+      light: '#66ff66',
+      dark: '#00cc33',
     },
     secondary: {
-      main: "#ffff00", // Neon yellow
-      light: "#ffff66",
-      dark: "#cccc00",
+      main: '#ffff00', // Neon yellow
+      light: '#ffff66',
+      dark: '#cccc00',
     },
     error: {
-      main: "#ff6b6b", // Soft red
-      light: "#ff9999",
-      dark: "#cc5555",
+      main: '#ff6b6b', // Soft red
+      light: '#ff9999',
+      dark: '#cc5555',
     },
     info: {
-      main: "#64b5f6", // Soft blue
-      light: "#90caf9",
-      dark: "#42a5f5",
+      main: '#64b5f6', // Soft blue
+      light: '#90caf9',
+      dark: '#42a5f5',
     },
     background: {
-      default: "#0d0d0d", // Darker background like Linear
-      paper: "#181818", // Slightly lighter for cards/papers
+      default: '#0d0d0d', // Darker background like Linear
+      paper: '#181818', // Slightly lighter for cards/papers
     },
     text: {
-      primary: "#f5f5f5", // Off-white for readability
-      secondary: "#a8a8a8", // Subtle gray for secondary text
+      primary: '#f5f5f5', // Off-white for readability
+      secondary: '#a8a8a8', // Subtle gray for secondary text
     },
   },
   components: {
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: "#0d0d0d",
-          borderBottom: "1px solid #262626",
-          backdropFilter: "blur(8px)",
+          backgroundColor: '#0d0d0d',
+          borderBottom: '1px solid #262626',
+          backdropFilter: 'blur(8px)',
         },
       },
     },
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          backgroundColor: "#0d0d0d",
-          borderRight: "1px solid #262626",
+          backgroundColor: '#0d0d0d',
+          borderRight: '1px solid #262626',
         },
       },
     },
     MuiListItemButton: {
       styleOverrides: {
         root: {
-          color: "#f5f5f5",
-          borderRadius: "6px",
-          margin: "2px 8px",
-          "&:hover": {
-            backgroundColor: "#262626",
+          color: '#f5f5f5',
+          borderRadius: '6px',
+          margin: '2px 8px',
+          '&:hover': {
+            backgroundColor: '#262626',
           },
-          "&.Mui-selected": {
-            backgroundColor: "#1a1a1a",
-            borderLeft: "2px solid",
-            "&:hover": {
-              backgroundColor: "#262626",
+          '&.Mui-selected': {
+            backgroundColor: '#1a1a1a',
+            borderLeft: '2px solid',
+            '&:hover': {
+              backgroundColor: '#262626',
             },
           },
         },
@@ -116,23 +116,23 @@ export const theme = createTheme({
     MuiListItemIcon: {
       styleOverrides: {
         root: {
-          color: "inherit",
+          color: 'inherit',
         },
       },
     },
     MuiTypography: {
       styleOverrides: {
         h6: {
-          textShadow: "0 0 10px currentColor",
+          textShadow: '0 0 10px currentColor',
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          textShadow: "0 0 5px currentColor",
-          "&:hover": {
-            boxShadow: "0 0 15px currentColor",
+          textShadow: '0 0 5px currentColor',
+          '&:hover': {
+            boxShadow: '0 0 15px currentColor',
           },
         },
       },

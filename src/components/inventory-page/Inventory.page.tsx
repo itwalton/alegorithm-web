@@ -1,7 +1,7 @@
-import { Grid } from "@mui/material";
-import FermentablesChart from "./charts/FermentablesChart";
-import AromaHopsChart from "./charts/AromaHopsChart";
-import WaterChemicalsWarnings from "./charts/WaterChemicalsWarnings";
+import { Grid } from '@mui/material';
+import FermentablesChart from './charts/FermentablesChart';
+import AromaHopsChart from './charts/AromaHopsChart';
+import WaterChemicalsWarnings from './charts/WaterChemicalsWarnings';
 
 export default function InventoryPage() {
   return (
@@ -16,5 +16,5 @@ export default function InventoryPage() {
         <WaterChemicalsWarnings />
       </Grid>
     </Grid>
-  )
+  );
 }

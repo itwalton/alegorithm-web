@@ -1,6 +1,6 @@
-import type { LineItem } from "../inventory.type";
+import type { LineItem } from '../inventory.type';
 
-export type ChemicalFormat = "dry" | "wet";
+export type ChemicalFormat = 'dry' | 'wet';
 
 export interface Chemical {
   id: string;

@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useState, type ReactNode } from 'react';
 import {
   Box,
   Drawer,
@@ -16,49 +16,67 @@ import {
   useMediaQuery,
   IconButton,
   Tooltip,
-} from '@mui/material'
+} from '@mui/material';
 import {
   Menu as MenuIcon,
   Home as HomeIcon,
   Inventory as InventoryIcon,
   Settings as SettingsIcon,
   Logout as LogoutIcon,
-} from '@mui/icons-material'
-import { GiWheat, GiHops } from 'react-icons/gi'
-import { MdScience } from 'react-icons/md'
-import { Link, useLocation } from '@tanstack/react-router'
+} from '@mui/icons-material';
+import { GiWheat, GiHops } from 'react-icons/gi';
+import { MdScience } from 'react-icons/md';
+import { Link, useLocation } from '@tanstack/react-router';
 
-const drawerWidth = 240
+const drawerWidth = 240;
 
 interface NavItem {
-  label: string
-  path: string
-  icon: ReactNode
-  indent?: boolean
-  color?: string
+  label: string;
+  path: string;
+  icon: ReactNode;
+  indent?: boolean;
+  color?: string;
 }
 
 interface AppLayoutProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export default function AppLayout({ children }: AppLayoutProps) {
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const location = useLocation()
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const location = useLocation();
 
   const navItems: NavItem[] = [
     { label: 'Overview', path: '/', icon: <HomeIcon /> },
     { label: 'Inventory', path: '/inventory', icon: <InventoryIcon /> },
-    { label: 'Fermentables', path: '/inventory/fermentables', icon: <GiWheat />, indent: true, color: theme.palette.secondary.main },
-    { label: 'Hops', path: '/inventory/hops', icon: <GiHops />, indent: true, color: theme.palette.primary.main },
-    { label: 'Chemicals', path: '/inventory/materials', icon: <MdScience />, indent: true, color: theme.palette.info.main },
-  ]
+    {
+      label: 'Fermentables',
+      path: '/inventory/fermentables',
+      icon: <GiWheat />,
+      indent: true,
+      color: theme.palette.secondary.main,
+    },
+    {
+      label: 'Hops',
+      path: '/inventory/hops',
+      icon: <GiHops />,
+      indent: true,
+      color: theme.palette.primary.main,
+    },
+    {
+      label: 'Chemicals',
+      path: '/inventory/materials',
+      icon: <MdScience />,
+      indent: true,
+      color: theme.palette.info.main,
+    },
+  ];
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen)
-  }
+    setMobileOpen(!mobileOpen);
+  };
 
   const drawer = (
     <div>
@@ -78,32 +96,38 @@ export default function AppLayout({ children }: AppLayoutProps) {
               onClick={() => isMobile && setMobileOpen(false)}
               sx={{
                 pl: item.indent ? 4 : 2,
-                '&:hover': item.color ? {
-                  backgroundColor: `${item.color}20`,
-                  color: item.color,
-                  '& .MuiListItemIcon-root': {
-                    color: item.color,
-                  }
-                } : {},
-                '&.Mui-selected': item.color ? {
-                  backgroundColor: `${item.color}30`,
-                  color: item.color,
-                  '& .MuiListItemIcon-root': {
-                    color: item.color,
-                  },
-                  '&:hover': {
-                    backgroundColor: `${item.color}40`,
-                  }
-                } : {}
+                '&:hover': item.color
+                  ? {
+                      backgroundColor: `${item.color}20`,
+                      color: item.color,
+                      '& .MuiListItemIcon-root': {
+                        color: item.color,
+                      },
+                    }
+                  : {},
+                '&.Mui-selected': item.color
+                  ? {
+                      backgroundColor: `${item.color}30`,
+                      color: item.color,
+                      '& .MuiListItemIcon-root': {
+                        color: item.color,
+                      },
+                      '&:hover': {
+                        backgroundColor: `${item.color}40`,
+                      },
+                    }
+                  : {},
               }}
             >
-              <ListItemIcon sx={{
-                minWidth: item.indent ? 36 : 56,
-                color: item.color || 'inherit',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
+              <ListItemIcon
+                sx={{
+                  minWidth: item.indent ? 36 : 56,
+                  color: item.color || 'inherit',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
                 {item.icon}
               </ListItemIcon>
               <ListItemText
@@ -114,8 +138,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
                   '& .MuiTypography-root': {
                     fontSize: item.indent ? '0.875rem' : '1rem',
                     color: item.color || 'inherit',
-                    lineHeight: 1
-                  }
+                    lineHeight: 1,
+                  },
                 }}
               />
             </ListItemButton>
@@ -123,7 +147,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
         ))}
       </List>
     </div>
-  )
+  );
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -160,10 +184,13 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 boxShadow: `0 0 15px ${theme.palette.primary.main}`,
               }}
             >
-              <Typography variant="h6" sx={{
-                color: theme.palette.primary.main,
-                textShadow: `0 0 10px ${theme.palette.primary.main}`
-              }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  color: theme.palette.primary.main,
+                  textShadow: `0 0 10px ${theme.palette.primary.main}`,
+                }}
+              >
                 A
               </Typography>
             </Box>
@@ -176,8 +203,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 sx={{
                   color: theme.palette.text.primary,
                   '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)'
-                  }
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  },
                 }}
               >
                 <SettingsIcon />
@@ -190,8 +217,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 sx={{
                   color: theme.palette.text.primary,
                   '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)'
-                  }
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  },
                 }}
               >
                 <LogoutIcon />
@@ -213,7 +240,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
           }}
           sx={{
             display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+            },
           }}
         >
           {drawer}
@@ -222,7 +252,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
           variant="permanent"
           sx={{
             display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+            },
           }}
           open
         >
@@ -241,5 +274,5 @@ export default function AppLayout({ children }: AppLayoutProps) {
         {children}
       </Box>
     </Box>
-  )
+  );
 }

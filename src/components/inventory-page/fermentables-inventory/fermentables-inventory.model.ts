@@ -1,6 +1,6 @@
-import type { LineItem } from "../inventory.type";
+import type { LineItem } from '../inventory.type';
 
-export type FermentableType = "malt extract" | "sugar";
+export type FermentableType = 'malt extract' | 'sugar';
 
 export interface Fermentable {
   id: string;

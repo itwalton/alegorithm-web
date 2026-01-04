@@ -1,6 +1,6 @@
-import type { LineItem } from "../inventory.type";
+import type { LineItem } from '../inventory.type';
 
-export type HopPurpose = "aroma" | "bittering";
+export type HopPurpose = 'aroma' | 'bittering';
 
 export interface Hop {
   id: string;

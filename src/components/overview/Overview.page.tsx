@@ -3,5 +3,5 @@ export default function OverviewPage() {
     <div>
       <h1>Overview</h1>
     </div>
-  )
+  );
 }

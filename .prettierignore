@@ -1,0 +1,23 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+build
+coverage
+
+# Vite
+.vite
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Package manager
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Git
+.git
