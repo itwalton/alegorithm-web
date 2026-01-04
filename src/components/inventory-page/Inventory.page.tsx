@@ -1,9 +1,9 @@
 import { Grid } from "@mui/material";
-import FermentablesChart from "../Charts/FermentablesChart";
-import AromaHopsChart from "../Charts/AromaHopsChart";
-import WaterChemicalsWarnings from "../Charts/WaterChemicalsWarnings";
+import FermentablesChart from "./charts/FermentablesChart";
+import AromaHopsChart from "./charts/AromaHopsChart";
+import WaterChemicalsWarnings from "./charts/WaterChemicalsWarnings";
 
-export default function Inventory() {
+export default function InventoryPage() {
   return (
     <Grid container spacing={2}>
       <Grid size={4}>

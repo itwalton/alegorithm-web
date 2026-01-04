@@ -49,7 +49,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const location = useLocation()
 
   const navItems: NavItem[] = [
-    { label: 'Home', path: '/', icon: <HomeIcon /> },
+    { label: 'Overview', path: '/', icon: <HomeIcon /> },
     { label: 'Inventory', path: '/inventory', icon: <InventoryIcon /> },
     { label: 'Fermentables', path: '/inventory/fermentables', icon: <GiWheat />, indent: true, color: theme.palette.secondary.main },
     { label: 'Hops', path: '/inventory/hops', icon: <GiHops />, indent: true, color: theme.palette.primary.main },
