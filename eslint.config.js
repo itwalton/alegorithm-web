@@ -19,5 +19,10 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // TanStack Table's useReactTable is incompatible with React Compiler memoization
+      // This is a known limitation and the warning can be safely ignored
+      'react-hooks/incompatible-library': 'off',
+    },
   },
 ])

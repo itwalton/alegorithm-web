@@ -5,11 +5,23 @@ import {
   ResponsiveContainer,
   Tooltip,
   Legend,
+  type TooltipProps,
 } from 'recharts';
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Typography, Paper, type Theme } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-const data = [
+interface ChartData {
+  name: string;
+  value: number;
+  color: string;
+}
+
+interface LegendPayload {
+  value: string;
+  color: string;
+}
+
+const data: ChartData[] = [
   { name: 'Citra', value: 35, color: '#00ff41' },
   { name: 'Mosaic', value: 28, color: '#ffff00' },
   { name: 'Amarillo', value: 20, color: '#64b5f6' },
@@ -17,29 +29,29 @@ const data = [
   { name: 'Cascade', value: 5, color: '#90caf9' },
 ];
 
+function CustomTooltip({ active, payload }: TooltipProps<number, string>, theme: Theme) {
+  if (active && payload && payload[0]) {
+    return (
+      <Box
+        sx={{
+          backgroundColor: theme.palette.background.paper,
+          border: `1px solid ${theme.palette.divider}`,
+          borderRadius: '6px',
+          p: 1,
+          color: theme.palette.text.primary,
+        }}
+      >
+        <Typography variant="body2">
+          {`${payload[0].name}: ${payload[0].value}%`}
+        </Typography>
+      </Box>
+    );
+  }
+  return null;
+}
+
 export default function AromaHopsDonutChart() {
   const theme = useTheme();
-
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload[0]) {
-      return (
-        <Box
-          sx={{
-            backgroundColor: theme.palette.background.paper,
-            border: `1px solid ${theme.palette.divider}`,
-            borderRadius: '6px',
-            p: 1,
-            color: theme.palette.text.primary,
-          }}
-        >
-          <Typography variant="body2">
-            {`${payload[0].name}: ${payload[0].value}%`}
-          </Typography>
-        </Box>
-      );
-    }
-    return null;
-  };
 
   return (
     <Paper
@@ -72,13 +84,13 @@ export default function AromaHopsDonutChart() {
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={(props) => CustomTooltip(props, theme)} />
             <Legend
               wrapperStyle={{
                 color: theme.palette.text.secondary,
                 fontSize: '12px',
               }}
-              formatter={(value: string, entry: any) => (
+              formatter={(value: string, entry: LegendPayload) => (
                 <span style={{ color: entry.color }}>{value}</span>
               )}
             />

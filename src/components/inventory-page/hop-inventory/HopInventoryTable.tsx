@@ -34,6 +34,10 @@ type HopTableRow = LineItem & {
   hop: Hop;
 };
 
+interface TableMeta {
+  align?: 'left' | 'center' | 'right';
+}
+
 export default function HopInventoryTable() {
   const theme = useTheme();
   const { data: hopInventoryRecords } = useGetHopInventoryRecords();
@@ -135,7 +139,7 @@ export default function HopInventoryTable() {
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableCell key={header.id} align={(header.column.columnDef.meta as any)?.align || 'left'}>
+                    <TableCell key={header.id} align={(header.column.columnDef.meta as TableMeta)?.align || 'left'}>
                       {header.isPlaceholder ? null : header.column.getCanSort() ? (
                         <TableSortLabel
                           active={!!header.column.getIsSorted()}
@@ -179,7 +183,7 @@ export default function HopInventoryTable() {
                     }}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} align={(cell.column.columnDef.meta as any)?.align || 'left'}>
+                      <TableCell key={cell.id} align={(cell.column.columnDef.meta as TableMeta)?.align || 'left'}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
