@@ -1,4 +1,4 @@
-import type { LineItem } from '../inventory.type';
+import type { InventoryRecord } from '../inventory.type';
 
 export type ChemicalFormat = 'dry' | 'wet';
 
@@ -8,6 +8,4 @@ export interface Chemical {
   format: ChemicalFormat;
 }
 
-export interface ChemicalLineItem extends LineItem {
-  chemical: Chemical;
-}
+export type ChemicalInventoryRecord = InventoryRecord<Chemical>;

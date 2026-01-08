@@ -1,4 +1,4 @@
-import type { LineItem } from '../inventory.type';
+import type { InventoryRecord } from '../inventory.type';
 
 export type FermentableType = 'malt' | 'extract' | 'sugar' | 'adjunct';
 
@@ -9,6 +9,4 @@ export interface Fermentable {
   gravityUnits: number;
 }
 
-export interface FermentableLineItem extends LineItem {
-  fermentable: Fermentable;
-}
+export type FermentableInventoryRecord = InventoryRecord<Fermentable>;

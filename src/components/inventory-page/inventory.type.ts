@@ -6,3 +6,8 @@ export interface LineItem {
     unit: string;
   };
 }
+
+export interface InventoryRecord<T> {
+  item: T;
+  lineItems: LineItem[];
+}

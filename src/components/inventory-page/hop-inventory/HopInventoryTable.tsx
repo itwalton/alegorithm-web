@@ -22,16 +22,21 @@ import {
   getSortedRowModel,
   type SortingState,
 } from '@tanstack/react-table';
-import { type HopLineItem } from './hop-inventory.model';
-import useGetHopInventory from './useGetHopInventory';
+import { type Hop } from './hop-inventory.model';
+import type { LineItem } from '../inventory.type';
+import useGetHopInventoryRecords from './useGetHopInventoryRecords';
 import AromaHopsDonutChart from './charts/AromaHopsDonutChart';
 import type { Widget } from '../shared/widgets/widgets.model';
 import Widgets from '../shared/widgets/Widgets';
 import { getTableRowColorByDatePurchased } from '../shared/styling.utils';
 
+type HopTableRow = LineItem & {
+  hop: Hop;
+};
+
 export default function HopInventoryTable() {
   const theme = useTheme();
-  const { data: hopLineItems } = useGetHopInventory();
+  const { data: hopInventoryRecords } = useGetHopInventoryRecords();
   const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -53,7 +58,7 @@ export default function HopInventoryTable() {
   };
 
   const columns = useMemo(() => {
-    const columnHelper = createColumnHelper<HopLineItem>();
+    const columnHelper = createColumnHelper<HopTableRow>();
     return [
       columnHelper.accessor((row) => row.hop.name, {
         id: 'name',
@@ -78,13 +83,6 @@ export default function HopInventoryTable() {
         enableSorting: false,
         meta: { align: 'center' },
       }),
-      columnHelper.accessor((row) => row.hop.dateHarvested, {
-        id: 'dateHarvested',
-        header: 'Date Harvested',
-        cell: (info) => info.getValue()?.toLocaleDateString() ?? '-',
-        enableSorting: true,
-        meta: { align: 'center' },
-      }),
       columnHelper.accessor('datePurchased', {
         id: 'datePurchased',
         header: 'Date Purchased',
@@ -95,10 +93,13 @@ export default function HopInventoryTable() {
     ];
   }, []);
 
-  const data = useMemo(() => hopLineItems, [hopLineItems]);
-
   const table = useReactTable({
-    data,
+    data: hopInventoryRecords.flatMap<HopTableRow>(record =>
+      record.lineItems.map(lineItem => ({
+        ...lineItem,
+        hop: record.item,
+      }))
+    ),
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),

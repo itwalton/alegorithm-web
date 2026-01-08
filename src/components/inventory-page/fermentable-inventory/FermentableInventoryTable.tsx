@@ -2,16 +2,22 @@ import { useState, useMemo } from "react";
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box, TextField, TableSortLabel } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, getFilteredRowModel, getSortedRowModel, type SortingState } from "@tanstack/react-table";
-import useGetFermentableInventory from "./useGetFermentableInventory";
-import type { FermentableLineItem } from "./fermentable-inventory.model";
+import useGetFermentableInventoryRecords from "./useGetFermentableInventoryRecords";
+import type { Fermentable } from "./fermentable-inventory.model";
+import type { LineItem } from "../inventory.type";
 import InventoryOnHandTimeseriesChart from "./charts/InventoryOnHandTimeseriesChart";
 import type { Widget } from "../shared/widgets/widgets.model";
 import Widgets from "../shared/widgets/Widgets";
 import { getTableRowColorByDatePurchased } from "../shared/styling.utils";
+import { upperFirst } from "lodash";
+
+type FermentableTableRow = LineItem & {
+  fermentable: Fermentable;
+};
 
 export default function FermentableInventoryTable() {
   const theme = useTheme();
-  const { data: fermentableInventoryRecords } = useGetFermentableInventory();
+  const { data: fermentableInventoryRecords } = useGetFermentableInventoryRecords();
   const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -33,24 +39,33 @@ export default function FermentableInventoryTable() {
   }
 
   const columns = useMemo(() => {
-    const columnHelper = createColumnHelper<FermentableLineItem>();
+    const columnHelper = createColumnHelper<FermentableTableRow>();
     return [
       columnHelper.accessor((row) => row.fermentable.name, {
-        id: 'fermentableName',
+        id: 'name',
         header: 'Name',
-        cell: (info) => info.getValue(),
+        cell: (info) => upperFirst(info.getValue()),
         enableSorting: true,
       }),
       columnHelper.accessor((row) => row.fermentable.type, {
-        id: 'FermentableType',
+        id: 'type',
         header: 'Type',
-        cell: (info) => info.getValue(),
+        cell: (info) => upperFirst(info.getValue()),
         enableSorting: true,
       }),
       columnHelper.accessor((row) => row.fermentable.gravityUnits, {
         id: 'gravityUnits',
         header: 'Gravity Units',
-        cell: (info) => info.getValue().toFixed(3),
+        cell: (info) => `${info.getValue()} GU`,
+        enableSorting: false,
+      }),
+      columnHelper.accessor((row) => row.amount, {
+        id: 'amount',
+        header: 'Amount',
+        cell: (info) => {
+          const amount = info.getValue();
+          return `${amount.value} ${amount.unit}`;
+        },
         enableSorting: false,
       }),
       columnHelper.accessor('datePurchased', {
@@ -62,10 +77,13 @@ export default function FermentableInventoryTable() {
     ];
   }, []);
 
-  const data = useMemo(() => fermentableInventoryRecords, [fermentableInventoryRecords]);
-
   const fermentableTable = useReactTable({
-    data,
+    data: fermentableInventoryRecords.flatMap<FermentableTableRow>(record =>
+      record.lineItems.map(lineItem => ({
+        ...lineItem,
+        fermentable: record.item,
+      }))
+    ),
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),

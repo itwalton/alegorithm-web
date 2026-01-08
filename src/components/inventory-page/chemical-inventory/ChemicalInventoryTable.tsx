@@ -21,16 +21,21 @@ import {
   getSortedRowModel,
   type SortingState,
 } from '@tanstack/react-table';
-import { type ChemicalLineItem } from './chemical-inventory.model';
-import useGetChemicalInventory from './useGetChemicalInventory';
+import { type Chemical } from './chemical-inventory.model';
+import useGetChemicalInventoryRecord from './useGetChemicalInventoryRecord';
 import WaterChemicalsWarningsList from './charts/WaterChemicalsWarningsList';
 import type { Widget } from '../shared/widgets/widgets.model';
 import Widgets from '../shared/widgets/Widgets';
 import { getTableRowColorByDatePurchased } from '../shared/styling.utils';
+import type { LineItem } from '../inventory.type';
+
+type ChemicalTableRow = LineItem & {
+  chemical: Chemical;
+};
 
 export default function ChemicalInventoryPage() {
   const theme = useTheme();
-  const { data: chemicalLineItems } = useGetChemicalInventory();
+  const { data: chemicalInventoryRecords } = useGetChemicalInventoryRecord();
   const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -52,7 +57,7 @@ export default function ChemicalInventoryPage() {
   };
 
   const columns = useMemo(() => {
-    const columnHelper = createColumnHelper<ChemicalLineItem>();
+    const columnHelper = createColumnHelper<ChemicalTableRow>();
     return [
       columnHelper.accessor((row) => row.chemical.name, {
         id: 'chemicalName',
@@ -84,10 +89,13 @@ export default function ChemicalInventoryPage() {
     ];
   }, []);
 
-  const data = useMemo(() => chemicalLineItems, [chemicalLineItems]);
-
   const table = useReactTable({
-    data,
+    data: chemicalInventoryRecords.flatMap<ChemicalTableRow>(record =>
+      record.lineItems.map(lineItem => ({
+        ...lineItem,
+        chemical: record.item,
+      }))
+    ),
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
