@@ -23,7 +23,7 @@ const data = [
 
 const repurchaseLimit = 20; // lbs
 
-export default function FermentablesChart() {
+export default function InventoryOnHandTimeseriesChart() {
   const theme = useTheme();
 
   return (

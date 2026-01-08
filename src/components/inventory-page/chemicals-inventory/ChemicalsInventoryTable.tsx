@@ -1,5 +1,4 @@
 import {
-  Typography,
   Box,
   Table,
   TableBody,
@@ -8,8 +7,8 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Grid,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import {
   useReactTable,
   getCoreRowModel,
@@ -17,96 +16,68 @@ import {
   flexRender,
 } from '@tanstack/react-table';
 import { type ChemicalLineItem } from './chemicals-inventory.model';
+import useGetChemicalsInventory from './useGetChemicalsInventory';
+import WaterChemicalsWarningsList from './charts/WaterChemicalsWarningsList';
 
-const mockData: ChemicalLineItem[] = [
-  {
-    id: '1',
-    datePurchased: new Date('2024-01-10'),
-    chemical: {
-      id: 'C001',
-      name: 'Irish Moss',
-      format: 'dry',
-      quantity: 100,
-    },
-  },
-  {
-    id: '2',
-    datePurchased: new Date('2024-02-15'),
-    chemical: {
-      id: 'C002',
-      name: 'Phosphoric Acid',
-      format: 'wet',
-      volume: 500,
-    },
-  },
-  {
-    id: '3',
-    datePurchased: new Date('2024-03-01'),
-    chemical: {
-      id: 'C003',
-      name: 'Gypsum',
-      format: 'dry',
-      quantity: 250,
-    },
-  },
-];
-
-const columnHelper = createColumnHelper<ChemicalLineItem>();
-
-const columns = [
-  columnHelper.accessor((row) => row.chemical.id, {
+const chemicalsColumnHelper = createColumnHelper<ChemicalLineItem>();
+const chemicalsColumns = [
+  chemicalsColumnHelper.accessor((row) => row.chemical.id, {
     id: 'chemicalId',
     header: 'Chemical ID',
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor((row) => row.chemical.name, {
+  chemicalsColumnHelper.accessor((row) => row.chemical.name, {
     id: 'chemicalName',
     header: 'Name',
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor((row) => row.chemical.format, {
+  chemicalsColumnHelper.accessor((row) => row.chemical.format, {
     id: 'chemicalFormat',
     header: 'Format',
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor((row) => row.chemical.quantity, {
+  chemicalsColumnHelper.accessor((row) => row.chemical.quantity, {
     id: 'quantity',
     header: 'Quantity (g)',
     cell: (info) => info.getValue() ?? '-',
   }),
-  columnHelper.accessor((row) => row.chemical.volume, {
+  chemicalsColumnHelper.accessor((row) => row.chemical.volume, {
     id: 'volume',
     header: 'Volume (ml)',
     cell: (info) => info.getValue() ?? '-',
   }),
-  columnHelper.accessor('datePurchased', {
+  chemicalsColumnHelper.accessor('datePurchased', {
     header: 'Date Purchased',
     cell: (info) => info.getValue().toLocaleDateString(),
   }),
 ];
 
 export default function ChemicalsInventoryPage() {
-  const theme = useTheme();
+  const { data: chemicalLineItems } = useGetChemicalsInventory();
 
   const table = useReactTable({
-    data: mockData,
-    columns,
+    data: chemicalLineItems,
+    columns: chemicalsColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
     <Box>
-      <Typography
-        variant="h4"
-        gutterBottom
-        sx={{ color: theme.palette.info.main }}
-      >
-        Chemicals
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        Manage your brewing chemicals - additives, acids, sanitizers, and
-        processing aids.
-      </Typography>
+      <Box>
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid size={4}>
+            <WaterChemicalsWarningsList />
+          </Grid>
+
+          <Grid size={4}>
+          </Grid>
+
+          <Grid size={4}>
+
+          </Grid>
+        </Grid>
+      </Box>
+
       <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table>
           <TableHead>
@@ -130,7 +101,10 @@ export default function ChemicalsInventoryPage() {
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {flexRender(
+                      cell.column.columnDef.cell,
+                      cell.getContext()
+                    )}
                   </TableCell>
                 ))}
               </TableRow>

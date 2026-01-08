@@ -5,7 +5,6 @@ import {
   AppBar,
   Toolbar,
   List,
-  Typography,
   Divider,
   ListItem,
   ListItemButton,
@@ -17,16 +16,15 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
-import { GiWheat, GiHops } from 'react-icons/gi';
 import {
-  MdScience,
-  MdInventory,
+  MdOutlineInventory,
   MdLogout,
   MdMenuBook,
   MdCalendarToday,
 } from 'react-icons/md';
 import { HiMenu, HiHome, HiCog } from 'react-icons/hi';
 import { Link, useLocation } from '@tanstack/react-router';
+import Logo from './Logo';
 
 const drawerWidth = 240;
 
@@ -50,30 +48,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
   const navItems: NavItem[] = [
     { label: 'Overview', path: '/', icon: <HiHome /> },
+    { label: 'Inventory', path: '/inventory', icon: <MdOutlineInventory /> },
     { label: 'Recipes', path: '/recipes', icon: <MdMenuBook /> },
     { label: 'Brew Days', path: '/brew-days', icon: <MdCalendarToday /> },
-    { label: 'Inventory', path: '/inventory', icon: <MdInventory /> },
-    {
-      label: 'Fermentables',
-      path: '/inventory/fermentables',
-      icon: <GiWheat />,
-      indent: true,
-      color: theme.palette.secondary.main,
-    },
-    {
-      label: 'Hops',
-      path: '/inventory/hops',
-      icon: <GiHops />,
-      indent: true,
-      color: theme.palette.primary.main,
-    },
-    {
-      label: 'Chemicals',
-      path: '/inventory/materials',
-      icon: <MdScience />,
-      indent: true,
-      color: theme.palette.info.main,
-    },
   ];
 
   const handleDrawerToggle = () => {
@@ -83,9 +60,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const drawer = (
     <div>
       <Toolbar>
-        <Typography variant="h6" noWrap component="div">
-          Alegorithm
-        </Typography>
+        <Logo />
       </Toolbar>
       <Divider />
       <List>
@@ -157,8 +132,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
       <AppBar
         position="fixed"
         sx={{
-          width: { md: `calc(100% - ${drawerWidth}px)` },
-          ml: { md: `${drawerWidth}px` },
+          width: '100%',
+          zIndex: theme.zIndex.drawer + 1,
         }}
       >
         <Toolbar>
@@ -171,32 +146,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
           >
             <HiMenu />
           </IconButton>
-          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-            <Box
-              sx={{
-                width: 40,
-                height: 40,
-                backgroundColor: theme.palette.background.paper,
-                border: `2px solid ${theme.palette.primary.main}`,
-                borderRadius: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                mr: 2,
-                boxShadow: `0 0 15px ${theme.palette.primary.main}`,
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  color: theme.palette.primary.main,
-                  textShadow: `0 0 10px ${theme.palette.primary.main}`,
-                }}
-              >
-                A
-              </Typography>
-            </Box>
-          </Box>
+
+          <Logo />
+
+          <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Tooltip title="Settings">
               <IconButton
@@ -212,6 +165,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 <HiCog />
               </IconButton>
             </Tooltip>
+
             <Tooltip title="Logout">
               <IconButton
                 color="inherit"

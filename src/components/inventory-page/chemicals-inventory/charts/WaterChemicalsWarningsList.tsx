@@ -30,7 +30,7 @@ const missingChemicals = [
   },
 ];
 
-export default function WaterChemicalsWarnings() {
+export default function WaterChemicalsWarningsList() {
   const theme = useTheme();
 
   return (

@@ -17,7 +17,7 @@ const data = [
   { name: 'Cascade', value: 5, color: '#90caf9' },
 ];
 
-export default function AromaHopsChart() {
+export default function AromaHopsDonutChart() {
   const theme = useTheme();
 
   const CustomTooltip = ({ active, payload }: any) => {
