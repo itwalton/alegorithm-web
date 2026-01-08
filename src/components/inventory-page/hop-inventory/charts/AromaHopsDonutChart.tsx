@@ -3,22 +3,15 @@ import {
   Pie,
   Cell,
   ResponsiveContainer,
-  Tooltip,
-  Legend,
-  type TooltipProps,
 } from 'recharts';
-import { Box, Typography, Paper, type Theme } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 interface ChartData {
   name: string;
   value: number;
   color: string;
-}
-
-interface LegendPayload {
-  value: string;
-  color: string;
+  [key: string]: string | number;
 }
 
 const data: ChartData[] = [
@@ -28,27 +21,6 @@ const data: ChartData[] = [
   { name: 'Centennial', value: 12, color: '#ff6b6b' },
   { name: 'Cascade', value: 5, color: '#90caf9' },
 ];
-
-function CustomTooltip({ active, payload }: TooltipProps<number, string>, theme: Theme) {
-  if (active && payload && payload[0]) {
-    return (
-      <Box
-        sx={{
-          backgroundColor: theme.palette.background.paper,
-          border: `1px solid ${theme.palette.divider}`,
-          borderRadius: '6px',
-          p: 1,
-          color: theme.palette.text.primary,
-        }}
-      >
-        <Typography variant="body2">
-          {`${payload[0].name}: ${payload[0].value}%`}
-        </Typography>
-      </Box>
-    );
-  }
-  return null;
-}
 
 export default function AromaHopsDonutChart() {
   const theme = useTheme();
@@ -84,16 +56,6 @@ export default function AromaHopsDonutChart() {
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
-            <Tooltip content={(props) => CustomTooltip(props, theme)} />
-            <Legend
-              wrapperStyle={{
-                color: theme.palette.text.secondary,
-                fontSize: '12px',
-              }}
-              formatter={(value: string, entry: LegendPayload) => (
-                <span style={{ color: entry.color }}>{value}</span>
-              )}
-            />
           </PieChart>
         </ResponsiveContainer>
       </Box>

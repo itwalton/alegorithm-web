@@ -5,15 +5,17 @@ import {
   Typography,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { GiWheat, GiHops } from 'react-icons/gi';
+import { GiWheat, GiHops, GiMicroscope } from 'react-icons/gi';
 import { MdScience } from 'react-icons/md';
 import FermentableInventoryTable from './fermentable-inventory/FermentableInventoryTable';
 import HopInventoryTable from './hop-inventory/HopInventoryTable';
 import ChemicalInventoryTable from './chemical-inventory/ChemicalInventoryTable';
+import YeastInventoryTable from './yeast-inventory/YeastInventoryTable';
 
 const InventoryCategory = {
   fermentables: "fermentables",
   hops: "hops",
+  yeast: "yeast",
   chemicals: "chemicals",
 } as const;
 
@@ -36,6 +38,12 @@ export default function InventoryPage() {
       color: theme.palette.primary.main,
     },
     {
+      id: InventoryCategory.yeast,
+      label: 'Yeast',
+      icon: <GiMicroscope size={20} />,
+      color: theme.palette.warning.main,
+    },
+    {
       id: InventoryCategory.chemicals,
       label: 'Chemicals',
       icon: <MdScience size={20} />,
@@ -49,6 +57,8 @@ export default function InventoryPage() {
         return <FermentableInventoryTable />
       case InventoryCategory.hops:
         return <HopInventoryTable />
+      case InventoryCategory.yeast:
+        return <YeastInventoryTable />
       case InventoryCategory.chemicals:
         return <ChemicalInventoryTable />
     }
