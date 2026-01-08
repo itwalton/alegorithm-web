@@ -1,13 +1,31 @@
-import { useState, useMemo } from "react";
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box, Grid, TextField, TableSortLabel, Tooltip, IconButton, Menu, MenuItem, Checkbox, ListItemText, Typography, Divider } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, getFilteredRowModel, getSortedRowModel, type SortingState } from "@tanstack/react-table";
-import useGetFermentablesInventory from "./useGetFermentablesInventory";
-import type { FermentableLineItem } from "./fermentables-inventory.model";
-import InventoryOnHandTimeseriesChart from "./charts/InventoryOnHandTimeseriesChart";
-import { BiCog } from "react-icons/bi";
-import type { Widget } from "../shared/widgets/widgets.model";
-import Widgets from "../shared/widgets/Widgets";
+import { useState, useMemo } from 'react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Box,
+  TextField,
+  TableSortLabel,
+} from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import {
+  useReactTable,
+  getCoreRowModel,
+  createColumnHelper,
+  flexRender,
+  getFilteredRowModel,
+  getSortedRowModel,
+  type SortingState,
+} from '@tanstack/react-table';
+import { type HopLineItem } from './hop-inventory.model';
+import useGetHopInventory from './useGetHopInventory';
+import AromaHopsDonutChart from './charts/AromaHopsDonutChart';
+import type { Widget } from '../shared/widgets/widgets.model';
+import Widgets from '../shared/widgets/Widgets';
 
 const getRowBackgroundColor = (datePurchased: Date, theme: any) => {
   const now = new Date();
@@ -21,18 +39,18 @@ const getRowBackgroundColor = (datePurchased: Date, theme: any) => {
   return 'transparent';
 };
 
-export default function FermentablesInventoryTable() {
+export default function HopInventoryTable() {
   const theme = useTheme();
-  const { data: fermentableInventoryRecords } = useGetFermentablesInventory();
+  const { data: hopLineItems } = useGetHopInventory();
   const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const [widgets, setWidgets] = useState<Widget[]>([
     {
-      id: "inventory-on-hand",
-      label: "Inventory on Hand",
+      id: "aroma-hops-donut",
+      label: "Aroma Hops",
       visible: true,
-      component: <InventoryOnHandTimeseriesChart />
+      component: <AromaHopsDonutChart />
     }
   ]);
 
@@ -42,28 +60,22 @@ export default function FermentablesInventoryTable() {
         widget.id === id ? { ...widget, visible } : widget
       )
     );
-  }
+  };
 
   const columns = useMemo(() => {
-    const columnHelper = createColumnHelper<FermentableLineItem>();
+    const columnHelper = createColumnHelper<HopLineItem>();
     return [
-      columnHelper.accessor((row) => row.fermentable.name, {
-        id: 'fermentableName',
+      columnHelper.accessor((row) => row.hop.name, {
+        id: 'hopName',
         header: 'Name',
         cell: (info) => info.getValue(),
         enableSorting: true,
       }),
-      columnHelper.accessor((row) => row.fermentable.format, {
-        id: 'fermentableFormat',
-        header: 'Format',
+      columnHelper.accessor((row) => row.hop.purpose, {
+        id: 'hopPurpose',
+        header: 'Purpose',
         cell: (info) => info.getValue(),
         enableSorting: true,
-      }),
-      columnHelper.accessor((row) => row.fermentable.gravityUnits, {
-        id: 'gravityUnits',
-        header: 'Gravity Units',
-        cell: (info) => info.getValue().toFixed(3),
-        enableSorting: false,
       }),
       columnHelper.accessor('datePurchased', {
         id: 'datePurchased',
@@ -71,12 +83,18 @@ export default function FermentablesInventoryTable() {
         cell: (info) => info.getValue().toLocaleDateString(),
         enableSorting: true,
       }),
+      columnHelper.accessor((row) => row.hop.dateHarvested, {
+        id: 'dateHarvested',
+        header: 'Date Harvested',
+        cell: (info) => info.getValue()?.toLocaleDateString() ?? '-',
+        enableSorting: true,
+      }),
     ];
   }, []);
 
-  const data = useMemo(() => fermentableInventoryRecords, [fermentableInventoryRecords]);
+  const data = useMemo(() => hopLineItems, [hopLineItems]);
 
-  const fermentablesTable = useReactTable({
+  const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -122,7 +140,7 @@ export default function FermentablesInventoryTable() {
         <TableContainer>
           <Table>
             <TableHead>
-              {fermentablesTable.getHeaderGroups().map((headerGroup) => (
+              {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <TableCell key={header.id}>
@@ -160,7 +178,7 @@ export default function FermentablesInventoryTable() {
               ))}
             </TableHead>
             <TableBody>
-              {fermentablesTable.getRowModel().rows.map((row) => {
+              {table.getRowModel().rows.map((row) => {
                 const backgroundColor = getRowBackgroundColor(row.original.datePurchased, theme);
                 return (
                   <TableRow

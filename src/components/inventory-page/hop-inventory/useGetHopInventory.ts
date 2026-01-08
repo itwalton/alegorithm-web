@@ -1,4 +1,4 @@
-import type { HopLineItem } from './hops-inventory.model';
+import type { HopLineItem } from './hop-inventory.model';
 
 type Response<T> = {
   data: T;
@@ -8,7 +8,7 @@ type Response<T> = {
 
 type HopInventoryResponse = Response<HopLineItem[]>;
 
-export default function useGetHopsInventory(): HopInventoryResponse {
+export default function useGetHopInventory(): HopInventoryResponse {
   return {
     data: [
       {

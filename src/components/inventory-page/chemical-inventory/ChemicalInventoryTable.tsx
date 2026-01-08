@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import {
+  Box,
   Table,
   TableBody,
   TableCell,
@@ -7,7 +8,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Box,
   TextField,
   TableSortLabel,
 } from '@mui/material';
@@ -21,9 +21,9 @@ import {
   getSortedRowModel,
   type SortingState,
 } from '@tanstack/react-table';
-import { type HopLineItem } from './hops-inventory.model';
-import useGetHopsInventory from './useGetHopsInventory';
-import AromaHopsDonutChart from './charts/AromaHopsDonutChart';
+import { type ChemicalLineItem } from './chemical-inventory.model';
+import useGetChemicalInventory from './useGetChemicalInventory';
+import WaterChemicalsWarningsList from './charts/WaterChemicalsWarningsList';
 import type { Widget } from '../shared/widgets/widgets.model';
 import Widgets from '../shared/widgets/Widgets';
 
@@ -39,18 +39,18 @@ const getRowBackgroundColor = (datePurchased: Date, theme: any) => {
   return 'transparent';
 };
 
-export default function HopsInventoryTable() {
+export default function ChemicalInventoryPage() {
   const theme = useTheme();
-  const { data: hopLineItems } = useGetHopsInventory();
+  const { data: chemicalLineItems } = useGetChemicalInventory();
   const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const [widgets, setWidgets] = useState<Widget[]>([
     {
-      id: "aroma-hops-donut",
-      label: "Aroma Hops",
+      id: "water-chemicals-warnings",
+      label: "Water Chemicals Warnings",
       visible: true,
-      component: <AromaHopsDonutChart />
+      component: <WaterChemicalsWarningsList />
     }
   ]);
 
@@ -63,18 +63,30 @@ export default function HopsInventoryTable() {
   };
 
   const columns = useMemo(() => {
-    const columnHelper = createColumnHelper<HopLineItem>();
+    const columnHelper = createColumnHelper<ChemicalLineItem>();
     return [
-      columnHelper.accessor((row) => row.hop.name, {
-        id: 'hopName',
+      columnHelper.accessor((row) => row.chemical.name, {
+        id: 'chemicalName',
         header: 'Name',
         cell: (info) => info.getValue(),
         enableSorting: true,
       }),
-      columnHelper.accessor((row) => row.hop.purpose, {
-        id: 'hopPurpose',
-        header: 'Purpose',
+      columnHelper.accessor((row) => row.chemical.format, {
+        id: 'chemicalFormat',
+        header: 'Format',
         cell: (info) => info.getValue(),
+        enableSorting: true,
+      }),
+      columnHelper.accessor((row) => row.chemical.quantity, {
+        id: 'quantity',
+        header: 'Quantity (g)',
+        cell: (info) => info.getValue() ?? '-',
+        enableSorting: true,
+      }),
+      columnHelper.accessor((row) => row.chemical.volume, {
+        id: 'volume',
+        header: 'Volume (ml)',
+        cell: (info) => info.getValue() ?? '-',
         enableSorting: true,
       }),
       columnHelper.accessor('datePurchased', {
@@ -83,16 +95,10 @@ export default function HopsInventoryTable() {
         cell: (info) => info.getValue().toLocaleDateString(),
         enableSorting: true,
       }),
-      columnHelper.accessor((row) => row.hop.dateHarvested, {
-        id: 'dateHarvested',
-        header: 'Date Harvested',
-        cell: (info) => info.getValue()?.toLocaleDateString() ?? '-',
-        enableSorting: true,
-      }),
     ];
   }, []);
 
-  const data = useMemo(() => hopLineItems, [hopLineItems]);
+  const data = useMemo(() => chemicalLineItems, [chemicalLineItems]);
 
   const table = useReactTable({
     data,

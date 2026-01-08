@@ -1,31 +1,12 @@
-import { useState, useMemo } from 'react';
-import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  TextField,
-  TableSortLabel,
-} from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import {
-  useReactTable,
-  getCoreRowModel,
-  createColumnHelper,
-  flexRender,
-  getFilteredRowModel,
-  getSortedRowModel,
-  type SortingState,
-} from '@tanstack/react-table';
-import { type ChemicalLineItem } from './chemicals-inventory.model';
-import useGetChemicalsInventory from './useGetChemicalsInventory';
-import WaterChemicalsWarningsList from './charts/WaterChemicalsWarningsList';
-import type { Widget } from '../shared/widgets/widgets.model';
-import Widgets from '../shared/widgets/Widgets';
+import { useState, useMemo } from "react";
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box, TextField, TableSortLabel } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, getFilteredRowModel, getSortedRowModel, type SortingState } from "@tanstack/react-table";
+import useGetFermentableInventory from "./useGetFermentableInventory";
+import type { FermentableLineItem } from "./fermentable-inventory.model";
+import InventoryOnHandTimeseriesChart from "./charts/InventoryOnHandTimeseriesChart";
+import type { Widget } from "../shared/widgets/widgets.model";
+import Widgets from "../shared/widgets/Widgets";
 
 const getRowBackgroundColor = (datePurchased: Date, theme: any) => {
   const now = new Date();
@@ -39,18 +20,18 @@ const getRowBackgroundColor = (datePurchased: Date, theme: any) => {
   return 'transparent';
 };
 
-export default function ChemicalsInventoryPage() {
+export default function FermentableInventoryTable() {
   const theme = useTheme();
-  const { data: chemicalLineItems } = useGetChemicalsInventory();
+  const { data: fermentableInventoryRecords } = useGetFermentableInventory();
   const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const [widgets, setWidgets] = useState<Widget[]>([
     {
-      id: "water-chemicals-warnings",
-      label: "Water Chemicals Warnings",
+      id: "inventory-on-hand",
+      label: "Inventory on Hand",
       visible: true,
-      component: <WaterChemicalsWarningsList />
+      component: <InventoryOnHandTimeseriesChart />
     }
   ]);
 
@@ -60,34 +41,28 @@ export default function ChemicalsInventoryPage() {
         widget.id === id ? { ...widget, visible } : widget
       )
     );
-  };
+  }
 
   const columns = useMemo(() => {
-    const columnHelper = createColumnHelper<ChemicalLineItem>();
+    const columnHelper = createColumnHelper<FermentableLineItem>();
     return [
-      columnHelper.accessor((row) => row.chemical.name, {
-        id: 'chemicalName',
+      columnHelper.accessor((row) => row.fermentable.name, {
+        id: 'fermentableName',
         header: 'Name',
         cell: (info) => info.getValue(),
         enableSorting: true,
       }),
-      columnHelper.accessor((row) => row.chemical.format, {
-        id: 'chemicalFormat',
+      columnHelper.accessor((row) => row.fermentable.format, {
+        id: 'fermentableFormat',
         header: 'Format',
         cell: (info) => info.getValue(),
         enableSorting: true,
       }),
-      columnHelper.accessor((row) => row.chemical.quantity, {
-        id: 'quantity',
-        header: 'Quantity (g)',
-        cell: (info) => info.getValue() ?? '-',
-        enableSorting: true,
-      }),
-      columnHelper.accessor((row) => row.chemical.volume, {
-        id: 'volume',
-        header: 'Volume (ml)',
-        cell: (info) => info.getValue() ?? '-',
-        enableSorting: true,
+      columnHelper.accessor((row) => row.fermentable.gravityUnits, {
+        id: 'gravityUnits',
+        header: 'Gravity Units',
+        cell: (info) => info.getValue().toFixed(3),
+        enableSorting: false,
       }),
       columnHelper.accessor('datePurchased', {
         id: 'datePurchased',
@@ -98,9 +73,9 @@ export default function ChemicalsInventoryPage() {
     ];
   }, []);
 
-  const data = useMemo(() => chemicalLineItems, [chemicalLineItems]);
+  const data = useMemo(() => fermentableInventoryRecords, [fermentableInventoryRecords]);
 
-  const table = useReactTable({
+  const fermentableTable = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -146,7 +121,7 @@ export default function ChemicalsInventoryPage() {
         <TableContainer>
           <Table>
             <TableHead>
-              {table.getHeaderGroups().map((headerGroup) => (
+              {fermentableTable.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <TableCell key={header.id}>
@@ -184,7 +159,7 @@ export default function ChemicalsInventoryPage() {
               ))}
             </TableHead>
             <TableBody>
-              {table.getRowModel().rows.map((row) => {
+              {fermentableTable.getRowModel().rows.map((row) => {
                 const backgroundColor = getRowBackgroundColor(row.original.datePurchased, theme);
                 return (
                   <TableRow

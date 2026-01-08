@@ -1,4 +1,4 @@
-import type { FermentableLineItem } from './fermentables-inventory.model';
+import type { FermentableLineItem } from './fermentable-inventory.model';
 
 type Response<T> = {
   data: T;
@@ -6,9 +6,9 @@ type Response<T> = {
   error: Error | null;
 };
 
-type FermentablesInventoryResponse = Response<FermentableLineItem[]>;
+type FermentableInventoryResponse = Response<FermentableLineItem[]>;
 
-export default function useGetFermentablesInventory(): FermentablesInventoryResponse {
+export default function useGetFermentableInventory(): FermentableInventoryResponse {
   return {
     data: [
       {

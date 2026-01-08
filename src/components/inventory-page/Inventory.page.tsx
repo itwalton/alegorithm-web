@@ -7,9 +7,9 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { GiWheat, GiHops } from 'react-icons/gi';
 import { MdScience } from 'react-icons/md';
-import FermentablesInventoryTable from './fermentables-inventory/FermentablesInventoryTable';
-import HopsInventoryTable from './hops-inventory/HopsInventoryTable';
-import ChemicalsInventoryTable from './chemicals-inventory/ChemicalsInventoryTable';
+import FermentableInventoryTable from './fermentable-inventory/FermentableInventoryTable';
+import HopInventoryTable from './hop-inventory/HopInventoryTable';
+import ChemicalInventoryTable from './chemical-inventory/ChemicalInventoryTable';
 
 const InventoryCategory = {
   fermentables: "fermentables",
@@ -46,11 +46,11 @@ export default function InventoryPage() {
   const renderTable = () => {
     switch (selectedCategory) {
       case InventoryCategory.fermentables:
-        return <FermentablesInventoryTable />
+        return <FermentableInventoryTable />
       case InventoryCategory.hops:
-        return <HopsInventoryTable />
+        return <HopInventoryTable />
       case InventoryCategory.chemicals:
-        return <ChemicalsInventoryTable />
+        return <ChemicalInventoryTable />
     }
   };
 

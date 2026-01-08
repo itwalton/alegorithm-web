@@ -1,4 +1,4 @@
-import type { ChemicalLineItem } from './chemicals-inventory.model';
+import type { ChemicalLineItem } from './chemical-inventory.model';
 
 type Response<T> = {
   data: T;
@@ -8,7 +8,7 @@ type Response<T> = {
 
 type ChemicalInventoryResponse = Response<ChemicalLineItem[]>;
 
-export default function useGetChemicalsInventory(): ChemicalInventoryResponse {
+export default function useGetChemicalInventory(): ChemicalInventoryResponse {
   return {
     data: [
       {

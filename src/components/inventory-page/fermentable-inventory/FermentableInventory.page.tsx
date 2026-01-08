@@ -16,7 +16,7 @@ import {
   createColumnHelper,
   flexRender,
 } from '@tanstack/react-table';
-import { type FermentableLineItem } from './fermentables-inventory.model';
+import { type FermentableLineItem } from './fermentable-inventory.model';
 
 const mockData: FermentableLineItem[] = [
   {
@@ -75,7 +75,7 @@ const columns = [
   }),
 ];
 
-export default function FermentablesInventoryPage() {
+export default function FermentableInventoryPage() {
   const theme = useTheme();
 
   const table = useReactTable({
