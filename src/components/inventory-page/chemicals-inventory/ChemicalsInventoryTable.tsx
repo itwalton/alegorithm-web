@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Box,
   Table,
@@ -7,7 +8,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Grid,
 } from '@mui/material';
 import {
   useReactTable,
@@ -18,6 +18,8 @@ import {
 import { type ChemicalLineItem } from './chemicals-inventory.model';
 import useGetChemicalsInventory from './useGetChemicalsInventory';
 import WaterChemicalsWarningsList from './charts/WaterChemicalsWarningsList';
+import type { Widget } from '../shared/widgets/widgets.model';
+import Widgets from '../shared/widgets/Widgets';
 
 const chemicalsColumnHelper = createColumnHelper<ChemicalLineItem>();
 const chemicalsColumns = [
@@ -55,6 +57,23 @@ const chemicalsColumns = [
 export default function ChemicalsInventoryPage() {
   const { data: chemicalLineItems } = useGetChemicalsInventory();
 
+  const [widgets, setWidgets] = useState<Widget[]>([
+    {
+      id: "water-chemicals-warnings",
+      label: "Water Chemicals Warnings",
+      visible: true,
+      component: <WaterChemicalsWarningsList />
+    }
+  ]);
+
+  const handleToggleWidget = (id: string, visible: boolean) => {
+    setWidgets(prevWidgets =>
+      prevWidgets.map(widget =>
+        widget.id === id ? { ...widget, visible } : widget
+      )
+    );
+  };
+
   const table = useReactTable({
     data: chemicalLineItems,
     columns: chemicalsColumns,
@@ -63,20 +82,7 @@ export default function ChemicalsInventoryPage() {
 
   return (
     <Box>
-      <Box>
-        <Grid container spacing={2} sx={{ mb: 3 }}>
-          <Grid size={4}>
-            <WaterChemicalsWarningsList />
-          </Grid>
-
-          <Grid size={4}>
-          </Grid>
-
-          <Grid size={4}>
-
-          </Grid>
-        </Grid>
-      </Box>
+      <Widgets widgets={widgets} onToggleWidget={handleToggleWidget} />
 
       <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table>

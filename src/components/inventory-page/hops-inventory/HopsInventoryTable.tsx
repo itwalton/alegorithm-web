@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -7,7 +8,6 @@ import {
   TableRow,
   Paper,
   Box,
-  Grid,
 } from '@mui/material';
 import {
   useReactTable,
@@ -18,6 +18,8 @@ import {
 import { type HopLineItem } from './hops-inventory.model';
 import useGetHopsInventory from './useGetHopsInventory';
 import AromaHopsDonutChart from './charts/AromaHopsDonutChart';
+import type { Widget } from '../shared/widgets/widgets.model';
+import Widgets from '../shared/widgets/Widgets';
 
 const columnHelper = createColumnHelper<HopLineItem>();
 
@@ -51,6 +53,23 @@ const columns = [
 export default function HopsInventoryTable() {
   const { data: hopLineItems } = useGetHopsInventory();
 
+  const [widgets, setWidgets] = useState<Widget[]>([
+    {
+      id: "aroma-hops-donut",
+      label: "Aroma Hops",
+      visible: true,
+      component: <AromaHopsDonutChart />
+    }
+  ]);
+
+  const handleToggleWidget = (id: string, visible: boolean) => {
+    setWidgets(prevWidgets =>
+      prevWidgets.map(widget =>
+        widget.id === id ? { ...widget, visible } : widget
+      )
+    );
+  };
+
   const table = useReactTable({
     data: hopLineItems,
     columns,
@@ -59,18 +78,7 @@ export default function HopsInventoryTable() {
 
   return (
     <Box>
-      <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid size={4}>
-          <AromaHopsDonutChart />
-        </Grid>
-
-        <Grid size={4}>
-        </Grid>
-
-        <Grid size={4}>
-
-        </Grid>
-      </Grid>
+      <Widgets widgets={widgets} onToggleWidget={handleToggleWidget} />
 
       <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table>
