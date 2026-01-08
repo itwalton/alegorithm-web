@@ -95,12 +95,12 @@ export default function FermentablesInventoryTable() {
     <Box>
       <Widgets widgets={widgets} onToggleWidget={handleToggleWidget} />
 
-      <Paper sx={{ borderRadius: 2, overflow: 'hidden', backgroundColor: '#0a0a0a' }}>
-        <Box sx={{ p: 2, pb: 1.5 }}>
+      <Paper sx={{ borderRadius: 2, backgroundColor: '#0a0a0a', paddingY: 2, paddingX: 2, minHeight: 400 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <TextField
             size="small"
             variant="outlined"
-            placeholder="Search by name, format, or date..."
+            placeholder="Search..."
             value={globalFilter ?? ''}
             onChange={(e) => setGlobalFilter(e.target.value)}
             sx={{
