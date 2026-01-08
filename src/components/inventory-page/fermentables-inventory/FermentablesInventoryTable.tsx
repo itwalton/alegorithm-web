@@ -1,10 +1,11 @@
 import { useState, useMemo } from "react";
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box, Grid, TextField, TableSortLabel } from "@mui/material";
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box, Grid, TextField, TableSortLabel, Tooltip, IconButton, Menu, MenuItem, Checkbox, ListItemText, Typography, Divider } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, getFilteredRowModel, getSortedRowModel, type SortingState } from "@tanstack/react-table";
 import useGetFermentablesInventory from "./useGetFermentablesInventory";
 import type { FermentableLineItem } from "./fermentables-inventory.model";
 import InventoryOnHandTimeseriesChart from "./charts/InventoryOnHandTimeseriesChart";
+import { BiCog } from "react-icons/bi";
 
 const getRowBackgroundColor = (datePurchased: Date, theme: any) => {
   const now = new Date();
@@ -23,6 +24,20 @@ export default function FermentablesInventoryTable() {
   const { data: fermentableInventoryRecords } = useGetFermentablesInventory();
   const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [showInventoryOnHand, setShowInventoryOnHand] = useState(true);
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleToggleInventoryOnHand = () => {
+    setShowInventoryOnHand((prev) => !prev);
+  };
 
   const columns = useMemo(() => {
     const columnHelper = createColumnHelper<FermentableLineItem>();
@@ -73,10 +88,54 @@ export default function FermentablesInventoryTable() {
 
   return (
     <Box>
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <Tooltip title="Widget Settings">
+          <IconButton
+            color="inherit"
+            aria-label="settings"
+            onClick={handleMenuOpen}
+            sx={{
+              color: theme.palette.text.primary,
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              },
+            }}
+          >
+            <BiCog />
+          </IconButton>
+        </Tooltip>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+        >
+          <MenuItem disabled>
+            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+              Show/Hide Widgets
+            </Typography>
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={handleToggleInventoryOnHand}>
+            <Checkbox checked={showInventoryOnHand} />
+            <ListItemText primary="Inventory on Hand" />
+          </MenuItem>
+        </Menu>
+      </Box>
+
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid size={4}>
-          <InventoryOnHandTimeseriesChart />
-        </Grid>
+        {showInventoryOnHand && (
+          <Grid size={4}>
+            <InventoryOnHandTimeseriesChart />
+          </Grid>
+        )}
 
         <Grid size={4}>
         </Grid>
