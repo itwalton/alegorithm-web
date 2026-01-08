@@ -6,6 +6,8 @@ import useGetFermentablesInventory from "./useGetFermentablesInventory";
 import type { FermentableLineItem } from "./fermentables-inventory.model";
 import InventoryOnHandTimeseriesChart from "./charts/InventoryOnHandTimeseriesChart";
 import { BiCog } from "react-icons/bi";
+import type { Widget } from "../shared/widgets/widgets.model";
+import Widgets from "../shared/widgets/Widgets";
 
 const getRowBackgroundColor = (datePurchased: Date, theme: any) => {
   const now = new Date();
@@ -24,20 +26,23 @@ export default function FermentablesInventoryTable() {
   const { data: fermentableInventoryRecords } = useGetFermentablesInventory();
   const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [showInventoryOnHand, setShowInventoryOnHand] = useState(true);
 
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const [widgets, setWidgets] = useState<Widget[]>([
+    {
+      id: "inventory-on-hand",
+      label: "Inventory on Hand",
+      visible: true,
+      component: <InventoryOnHandTimeseriesChart />
+    }
+  ]);
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleToggleInventoryOnHand = () => {
-    setShowInventoryOnHand((prev) => !prev);
-  };
+  const handleToggleWidget = (id: string, visible: boolean) => {
+    setWidgets(prevWidgets =>
+      prevWidgets.map(widget =>
+        widget.id === id ? { ...widget, visible } : widget
+      )
+    );
+  }
 
   const columns = useMemo(() => {
     const columnHelper = createColumnHelper<FermentableLineItem>();
@@ -88,62 +93,7 @@ export default function FermentablesInventoryTable() {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <Tooltip title="Widget Settings">
-          <IconButton
-            color="inherit"
-            aria-label="settings"
-            onClick={handleMenuOpen}
-            sx={{
-              color: theme.palette.text.primary,
-              '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              },
-            }}
-          >
-            <BiCog />
-          </IconButton>
-        </Tooltip>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-        >
-          <MenuItem disabled>
-            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-              Show/Hide Widgets
-            </Typography>
-          </MenuItem>
-          <Divider />
-          <MenuItem onClick={handleToggleInventoryOnHand}>
-            <Checkbox checked={showInventoryOnHand} />
-            <ListItemText primary="Inventory on Hand" />
-          </MenuItem>
-        </Menu>
-      </Box>
-
-      <Grid container spacing={2} sx={{ mb: 3 }}>
-        {showInventoryOnHand && (
-          <Grid size={4}>
-            <InventoryOnHandTimeseriesChart />
-          </Grid>
-        )}
-
-        <Grid size={4}>
-        </Grid>
-
-        <Grid size={4}>
-
-        </Grid>
-      </Grid>
+      <Widgets widgets={widgets} onToggleWidget={handleToggleWidget} />
 
       <Paper sx={{ borderRadius: 2, overflow: 'hidden', backgroundColor: '#0a0a0a' }}>
         <Box sx={{ p: 2, pb: 1.5 }}>
