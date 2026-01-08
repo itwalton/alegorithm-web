@@ -23,12 +23,14 @@ export default function useGetYeastInventoryRecords(): YeastInventoryResponse {
           {
             id: 'L001',
             datePurchased: new Date('2025-12-01'),
-            amount: { value: 11.5, unit: 'g' },
+            amountPurchased: { value: 11.5, unit: 'g' },
+            amountRemaining: { value: 11.5, unit: 'g' },
           },
           {
             id: 'L002',
             datePurchased: new Date('2025-11-20'),
-            amount: { value: 11.5, unit: 'g' },
+            amountPurchased: { value: 11.5, unit: 'g' },
+            amountRemaining: { value: 11.5, unit: 'g' },
           },
         ],
       },
@@ -44,7 +46,8 @@ export default function useGetYeastInventoryRecords(): YeastInventoryResponse {
           {
             id: 'L003',
             datePurchased: new Date('2025-10-25'),
-            amount: { value: 125, unit: 'ml' },
+            amountPurchased: { value: 125, unit: 'ml' },
+            amountRemaining: { value: 125, unit: 'ml' },
           },
         ],
       },
@@ -60,7 +63,8 @@ export default function useGetYeastInventoryRecords(): YeastInventoryResponse {
           {
             id: 'L004',
             datePurchased: new Date('2025-10-01'),
-            amount: { value: 35, unit: 'ml' },
+            amountPurchased: { value: 35, unit: 'ml' },
+            amountRemaining: { value: 35, unit: 'ml' },
           },
         ],
       },
@@ -76,7 +80,8 @@ export default function useGetYeastInventoryRecords(): YeastInventoryResponse {
           {
             id: 'L005',
             datePurchased: new Date('2025-09-10'),
-            amount: { value: 11.5, unit: 'g' },
+            amountPurchased: { value: 11.5, unit: 'g' },
+            amountRemaining: { value: 11.5, unit: 'g' },
           },
         ],
       },
@@ -92,7 +97,8 @@ export default function useGetYeastInventoryRecords(): YeastInventoryResponse {
           {
             id: 'L006',
             datePurchased: new Date('2025-07-20'),
-            amount: { value: 125, unit: 'ml' },
+            amountPurchased: { value: 125, unit: 'ml' },
+            amountRemaining: { value: 125, unit: 'ml' },
           },
         ],
       },
@@ -108,7 +114,8 @@ export default function useGetYeastInventoryRecords(): YeastInventoryResponse {
           {
             id: 'L007',
             datePurchased: new Date('2025-01-05'),
-            amount: { value: 35, unit: 'ml' },
+            amountPurchased: { value: 35, unit: 'ml' },
+            amountRemaining: { value: 35, unit: 'ml' },
           },
         ],
       },
@@ -124,7 +131,8 @@ export default function useGetYeastInventoryRecords(): YeastInventoryResponse {
           {
             id: 'L008',
             datePurchased: new Date('2025-07-01'),
-            amount: { value: 11.5, unit: 'g' },
+            amountPurchased: { value: 11.5, unit: 'g' },
+            amountRemaining: { value: 11.5, unit: 'g' },
           },
         ],
       },
@@ -140,7 +148,8 @@ export default function useGetYeastInventoryRecords(): YeastInventoryResponse {
           {
             id: 'L009',
             datePurchased: new Date('2025-06-01'),
-            amount: { value: 125, unit: 'ml' },
+            amountPurchased: { value: 125, unit: 'ml' },
+            amountRemaining: { value: 125, unit: 'ml' },
           },
         ],
       },

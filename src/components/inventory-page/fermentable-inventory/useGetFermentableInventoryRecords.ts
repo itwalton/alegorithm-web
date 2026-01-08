@@ -22,12 +22,14 @@ export default function useGetFermentableInventoryRecords(): FermentableInventor
           {
             id: 'L001',
             datePurchased: new Date('2026-01-05'), // Recent
-            amount: { value: 20, unit: 'lb' },
+            amountPurchased: { value: 20, unit: 'lb' },
+            amountRemaining: { value: 18, unit: 'lb' },
           },
           {
             id: 'L002',
             datePurchased: new Date('2024-12-20'), // >12 months - RED
-            amount: { value: 10, unit: 'lb' },
+            amountPurchased: { value: 10, unit: 'lb' },
+            amountRemaining: { value: 7, unit: 'lb' },
           },
         ],
       },
@@ -42,7 +44,8 @@ export default function useGetFermentableInventoryRecords(): FermentableInventor
           {
             id: 'L003',
             datePurchased: new Date('2024-12-20'), // >12 months - RED
-            amount: { value: 5, unit: 'lb' },
+            amountPurchased: { value: 5, unit: 'lb' },
+            amountRemaining: { value: 4, unit: 'lb' },
           },
         ],
       },
@@ -57,7 +60,8 @@ export default function useGetFermentableInventoryRecords(): FermentableInventor
           {
             id: 'L004',
             datePurchased: new Date('2025-12-05'), // Recent
-            amount: { value: 1, unit: 'gallon' },
+            amountPurchased: { value: 1, unit: 'gallon' },
+            amountRemaining: { value: 0.8, unit: 'gallon' },
           },
         ],
       },
@@ -72,7 +76,8 @@ export default function useGetFermentableInventoryRecords(): FermentableInventor
           {
             id: 'L005',
             datePurchased: new Date('2024-03-25'), // >12 months - RED
-            amount: { value: 10, unit: 'lb' },
+            amountPurchased: { value: 10, unit: 'lb' },
+            amountRemaining: { value: 6, unit: 'lb' },
           },
         ],
       },
@@ -87,7 +92,8 @@ export default function useGetFermentableInventoryRecords(): FermentableInventor
           {
             id: 'L006',
             datePurchased: new Date('2025-05-05'), // >6 months - YELLOW
-            amount: { value: 2, unit: 'lb' },
+            amountPurchased: { value: 2, unit: 'lb' },
+            amountRemaining: { value: 1.5, unit: 'lb' },
           },
         ],
       },
@@ -102,7 +108,8 @@ export default function useGetFermentableInventoryRecords(): FermentableInventor
           {
             id: 'L007',
             datePurchased: new Date('2024-06-12'), // >12 months - RED
-            amount: { value: 15, unit: 'lb' },
+            amountPurchased: { value: 15, unit: 'lb' },
+            amountRemaining: { value: 12, unit: 'lb' },
           },
         ],
       },
@@ -117,7 +124,8 @@ export default function useGetFermentableInventoryRecords(): FermentableInventor
           {
             id: 'L008',
             datePurchased: new Date('2025-06-18'), // >6 months - YELLOW
-            amount: { value: 8, unit: 'lb' },
+            amountPurchased: { value: 8, unit: 'lb' },
+            amountRemaining: { value: 7, unit: 'lb' },
           },
         ],
       },
@@ -132,7 +140,8 @@ export default function useGetFermentableInventoryRecords(): FermentableInventor
           {
             id: 'L009',
             datePurchased: new Date('2025-11-22'), // Recent
-            amount: { value: 3, unit: 'lb' },
+            amountPurchased: { value: 3, unit: 'lb' },
+            amountRemaining: { value: 3, unit: 'lb' },
           },
         ],
       },

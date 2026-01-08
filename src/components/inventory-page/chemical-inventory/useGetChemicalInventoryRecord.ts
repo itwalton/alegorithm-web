@@ -21,7 +21,8 @@ export default function useGetChemicalInventoryRecord(): ChemicalInventoryRespon
           {
             id: 'CL001',
             datePurchased: new Date('2025-11-10'), // Recent
-            amount: { value: 0.5, unit: 'lb' },
+            amountPurchased: { value: 0.5, unit: 'lb' },
+            amountRemaining: { value: 0.4, unit: 'lb' },
           },
         ],
       },
@@ -35,7 +36,8 @@ export default function useGetChemicalInventoryRecord(): ChemicalInventoryRespon
           {
             id: 'CL002',
             datePurchased: new Date('2024-05-15'), // >12 months - RED
-            amount: { value: 16, unit: 'fl oz' },
+            amountPurchased: { value: 16, unit: 'fl oz' },
+            amountRemaining: { value: 12, unit: 'fl oz' },
           },
         ],
       },
@@ -49,12 +51,14 @@ export default function useGetChemicalInventoryRecord(): ChemicalInventoryRespon
           {
             id: 'CL003',
             datePurchased: new Date('2026-01-02'), // Recent
-            amount: { value: 1, unit: 'lb' },
+            amountPurchased: { value: 1, unit: 'lb' },
+            amountRemaining: { value: 0.9, unit: 'lb' },
           },
           {
             id: 'CL004',
             datePurchased: new Date('2024-08-15'), // >12 months - RED
-            amount: { value: 0.5, unit: 'lb' },
+            amountPurchased: { value: 0.5, unit: 'lb' },
+            amountRemaining: { value: 0.3, unit: 'lb' },
           },
         ],
       },
@@ -68,7 +72,8 @@ export default function useGetChemicalInventoryRecord(): ChemicalInventoryRespon
           {
             id: 'CL005',
             datePurchased: new Date('2025-06-05'), // >6 months - YELLOW
-            amount: { value: 0.75, unit: 'lb' },
+            amountPurchased: { value: 0.75, unit: 'lb' },
+            amountRemaining: { value: 0.6, unit: 'lb' },
           },
         ],
       },
@@ -82,7 +87,8 @@ export default function useGetChemicalInventoryRecord(): ChemicalInventoryRespon
           {
             id: 'CL006',
             datePurchased: new Date('2024-02-20'), // >12 months - RED
-            amount: { value: 8, unit: 'fl oz' },
+            amountPurchased: { value: 8, unit: 'fl oz' },
+            amountRemaining: { value: 5, unit: 'fl oz' },
           },
         ],
       },
@@ -96,7 +102,8 @@ export default function useGetChemicalInventoryRecord(): ChemicalInventoryRespon
           {
             id: 'CL007',
             datePurchased: new Date('2025-09-18'), // Recent
-            amount: { value: 50, unit: 'tablet' },
+            amountPurchased: { value: 50, unit: 'tablet' },
+            amountRemaining: { value: 45, unit: 'tablet' },
           },
         ],
       },
@@ -110,7 +117,8 @@ export default function useGetChemicalInventoryRecord(): ChemicalInventoryRespon
           {
             id: 'CL008',
             datePurchased: new Date('2025-04-25'), // >6 months - YELLOW
-            amount: { value: 0.5, unit: 'lb' },
+            amountPurchased: { value: 0.5, unit: 'lb' },
+            amountRemaining: { value: 0.35, unit: 'lb' },
           },
         ],
       },
@@ -124,7 +132,8 @@ export default function useGetChemicalInventoryRecord(): ChemicalInventoryRespon
           {
             id: 'CL009',
             datePurchased: new Date('2024-08-10'), // >12 months - RED
-            amount: { value: 20, unit: 'tablet' },
+            amountPurchased: { value: 20, unit: 'tablet' },
+            amountRemaining: { value: 15, unit: 'tablet' },
           },
         ],
       },

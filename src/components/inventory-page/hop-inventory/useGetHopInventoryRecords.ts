@@ -21,12 +21,14 @@ export default function useGetHopInventoryRecords(): HopInventoryResponse {
           {
             id: 'HL001',
             datePurchased: new Date('2026-01-05'), // Recent
-            amount: { value: 16, unit: 'oz' },
+            amountPurchased: { value: 16, unit: 'oz' },
+            amountRemaining: { value: 14, unit: 'oz' },
           },
           {
             id: 'HL002',
             datePurchased: new Date('2025-05-15'), // >6 months - YELLOW
-            amount: { value: 8, unit: 'oz' },
+            amountPurchased: { value: 8, unit: 'oz' },
+            amountRemaining: { value: 6, unit: 'oz' },
           },
         ],
       },
@@ -40,7 +42,8 @@ export default function useGetHopInventoryRecords(): HopInventoryResponse {
           {
             id: 'HL003',
             datePurchased: new Date('2024-06-10'), // >12 months - RED
-            amount: { value: 8, unit: 'oz' },
+            amountPurchased: { value: 8, unit: 'oz' },
+            amountRemaining: { value: 5, unit: 'oz' },
           },
         ],
       },
@@ -54,7 +57,8 @@ export default function useGetHopInventoryRecords(): HopInventoryResponse {
           {
             id: 'HL004',
             datePurchased: new Date('2025-12-15'), // Recent
-            amount: { value: 12, unit: 'oz' },
+            amountPurchased: { value: 12, unit: 'oz' },
+            amountRemaining: { value: 11, unit: 'oz' },
           },
         ],
       },
@@ -68,7 +72,8 @@ export default function useGetHopInventoryRecords(): HopInventoryResponse {
           {
             id: 'HL005',
             datePurchased: new Date('2025-05-20'), // >6 months - YELLOW
-            amount: { value: 10, unit: 'oz' },
+            amountPurchased: { value: 10, unit: 'oz' },
+            amountRemaining: { value: 8, unit: 'oz' },
           },
         ],
       },
@@ -82,7 +87,8 @@ export default function useGetHopInventoryRecords(): HopInventoryResponse {
           {
             id: 'HL006',
             datePurchased: new Date('2024-03-12'), // >12 months - RED
-            amount: { value: 6, unit: 'oz' },
+            amountPurchased: { value: 6, unit: 'oz' },
+            amountRemaining: { value: 4, unit: 'oz' },
           },
         ],
       },
@@ -96,7 +102,8 @@ export default function useGetHopInventoryRecords(): HopInventoryResponse {
           {
             id: 'HL007',
             datePurchased: new Date('2025-10-08'), // Recent
-            amount: { value: 14, unit: 'oz' },
+            amountPurchased: { value: 14, unit: 'oz' },
+            amountRemaining: { value: 13, unit: 'oz' },
           },
         ],
       },
@@ -110,7 +117,8 @@ export default function useGetHopInventoryRecords(): HopInventoryResponse {
           {
             id: 'HL008',
             datePurchased: new Date('2025-06-18'), // >6 months - YELLOW
-            amount: { value: 5, unit: 'oz' },
+            amountPurchased: { value: 5, unit: 'oz' },
+            amountRemaining: { value: 4, unit: 'oz' },
           },
         ],
       },
@@ -124,7 +132,8 @@ export default function useGetHopInventoryRecords(): HopInventoryResponse {
           {
             id: 'HL009',
             datePurchased: new Date('2024-11-22'), // >12 months - RED
-            amount: { value: 8, unit: 'oz' },
+            amountPurchased: { value: 8, unit: 'oz' },
+            amountRemaining: { value: 6, unit: 'oz' },
           },
         ],
       },
