@@ -1,34 +1,74 @@
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box, Typography, Grid } from "@mui/material";
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { useState, useMemo } from "react";
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box, Grid, TextField, TableSortLabel } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, getFilteredRowModel, getSortedRowModel, type SortingState } from "@tanstack/react-table";
 import useGetFermentablesInventory from "./useGetFermentablesInventory";
 import type { FermentableLineItem } from "./fermentables-inventory.model";
 import InventoryOnHandTimeseriesChart from "./charts/InventoryOnHandTimeseriesChart";
 
-const fermentablesColumnHelper = createColumnHelper<FermentableLineItem>();
-const fermentablesColumns = [
-  fermentablesColumnHelper.accessor((row) => row.fermentable.id, {
-    id: 'fermentableId',
-    header: 'Fermentable ID',
-    cell: (info) => info.getValue(),
-  }),
-  fermentablesColumnHelper.accessor((row) => row.fermentable.type, {
-    id: 'fermentableType',
-    header: 'Fermentable Type',
-    cell: (info) => info.getValue(),
-  }),
-  fermentablesColumnHelper.accessor('datePurchased', {
-    header: 'Date Purchased',
-    cell: (info) => info.getValue().toLocaleDateString(),
-  }),
-];
+const getRowBackgroundColor = (datePurchased: Date, theme: any) => {
+  const now = new Date();
+  const monthsDiff = (now.getTime() - datePurchased.getTime()) / (1000 * 60 * 60 * 24 * 30);
+
+  if (monthsDiff > 12) {
+    return `${theme.palette.error.main}15`; // Red hue with 15% opacity
+  } else if (monthsDiff > 6) {
+    return `${theme.palette.secondary.main}15`; // Yellow hue with 15% opacity
+  }
+  return 'transparent';
+};
 
 export default function FermentablesInventoryTable() {
+  const theme = useTheme();
   const { data: fermentableInventoryRecords } = useGetFermentablesInventory();
+  const [globalFilter, setGlobalFilter] = useState('');
+  const [sorting, setSorting] = useState<SortingState>([]);
+
+  const columns = useMemo(() => {
+    const columnHelper = createColumnHelper<FermentableLineItem>();
+    return [
+      columnHelper.accessor((row) => row.fermentable.name, {
+        id: 'fermentableName',
+        header: 'Name',
+        cell: (info) => info.getValue(),
+        enableSorting: true,
+      }),
+      columnHelper.accessor((row) => row.fermentable.format, {
+        id: 'fermentableFormat',
+        header: 'Format',
+        cell: (info) => info.getValue(),
+        enableSorting: true,
+      }),
+      columnHelper.accessor((row) => row.fermentable.gravityUnits, {
+        id: 'gravityUnits',
+        header: 'Gravity Units',
+        cell: (info) => info.getValue().toFixed(3),
+        enableSorting: false,
+      }),
+      columnHelper.accessor('datePurchased', {
+        id: 'datePurchased',
+        header: 'Date Purchased',
+        cell: (info) => info.getValue().toLocaleDateString(),
+        enableSorting: true,
+      }),
+    ];
+  }, []);
+
+  const data = useMemo(() => fermentableInventoryRecords, [fermentableInventoryRecords]);
 
   const fermentablesTable = useReactTable({
-    data: fermentableInventoryRecords,
-    columns: fermentablesColumns,
+    data,
+    columns,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      globalFilter,
+      sorting,
+    },
+    onGlobalFilterChange: setGlobalFilter,
+    onSortingChange: setSorting,
+    autoResetAll: false,
   });
 
   return (
@@ -46,40 +86,100 @@ export default function FermentablesInventoryTable() {
         </Grid>
       </Grid>
 
-      <TableContainer component={Paper} sx={{ mt: 2 }}>
-        <Table>
-          <TableHead>
-            {fermentablesTable.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableCell key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
+      <Paper sx={{ borderRadius: 2, overflow: 'hidden', backgroundColor: '#0a0a0a' }}>
+        <Box sx={{ p: 2, pb: 1.5 }}>
+          <TextField
+            size="small"
+            variant="outlined"
+            placeholder="Search by name, format, or date..."
+            value={globalFilter ?? ''}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            sx={{
+              width: '33.333%',
+              '& .MuiOutlinedInput-root': {
+                backgroundColor: '#050505',
+                borderRadius: 1,
+                '& fieldset': {
+                  borderColor: '#1a1a1a',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#2a2a2a',
+                },
+              },
+            }}
+          />
+        </Box>
+
+        <TableContainer>
+          <Table>
+            <TableHead>
+              {fermentablesTable.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableCell key={header.id}>
+                      {header.isPlaceholder ? null : header.column.getCanSort() ? (
+                        <TableSortLabel
+                          active={!!header.column.getIsSorted()}
+                          direction={header.column.getIsSorted() === 'desc' ? 'desc' : 'asc'}
+                          onClick={(event) => {
+                            const handler = header.column.getToggleSortingHandler();
+                            if (handler) {
+                              handler(event);
+                            }
+                          }}
+                          hideSortIcon={false}
+                          sx={{
+                            '& .MuiTableSortLabel-icon': {
+                              opacity: header.column.getIsSorted() ? 1 : 0.3,
+                            },
+                          }}
+                        >
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                        </TableSortLabel>
+                      ) : (
+                        flexRender(
                           header.column.columnDef.header,
                           header.getContext()
+                        )
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHead>
+            <TableBody>
+              {fermentablesTable.getRowModel().rows.map((row) => {
+                const backgroundColor = getRowBackgroundColor(row.original.datePurchased, theme);
+                return (
+                  <TableRow
+                    key={row.id}
+                    sx={{
+                      backgroundColor,
+                      '&:hover': {
+                        backgroundColor: backgroundColor !== 'transparent'
+                          ? `${backgroundColor}cc`
+                          : '#0f0f0f',
+                      },
+                    }}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
                         )}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableHead>
-          <TableBody>
-            {fermentablesTable.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(
-                      cell.column.columnDef.cell,
-                      cell.getContext()
-                    )}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
     </Box>
   );
 }

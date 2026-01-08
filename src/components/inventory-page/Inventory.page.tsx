@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  Grid,
   Box,
   Button,
   Typography,
@@ -8,9 +7,6 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { GiWheat, GiHops } from 'react-icons/gi';
 import { MdScience } from 'react-icons/md';
-import FermentablesChart from './fermentables-inventory/charts/InventoryOnHandTimeseriesChart';
-import AromaHopsChart from './hops-inventory/charts/AromaHopsDonutChart';
-import WaterChemicalsWarnings from './chemicals-inventory/charts/WaterChemicalsWarningsList';
 import FermentablesInventoryTable from './fermentables-inventory/FermentablesInventoryTable';
 import HopsInventoryTable from './hops-inventory/HopsInventoryTable';
 import ChemicalsInventoryTable from './chemicals-inventory/ChemicalsInventoryTable';
@@ -46,10 +42,6 @@ export default function InventoryPage() {
       color: theme.palette.info.main,
     },
   ];
-
-  const selectedCategoryData = categories.find(
-    (cat) => cat.id === selectedCategory
-  )!;
 
   const renderTable = () => {
     switch (selectedCategory) {

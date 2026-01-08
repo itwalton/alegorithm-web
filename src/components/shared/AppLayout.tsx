@@ -113,9 +113,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
                   display: 'flex',
                   alignItems: 'center',
                   '& .MuiTypography-root': {
-                    fontSize: item.indent ? '0.875rem' : '1rem',
+                    fontSize: item.indent ? '1rem' : '1.125rem',
                     color: item.color || 'inherit',
-                    lineHeight: 1,
+                    lineHeight: 1.2,
                   },
                 }}
               />

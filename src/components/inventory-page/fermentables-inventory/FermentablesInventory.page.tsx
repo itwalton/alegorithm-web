@@ -24,7 +24,9 @@ const mockData: FermentableLineItem[] = [
     datePurchased: new Date('2024-01-15'),
     fermentable: {
       id: 'F001',
-      type: 'malt extract',
+      name: 'Pale Ale Malt',
+      format: 'malt',
+      gravityUnits: 1.037,
     },
   },
   {
@@ -32,7 +34,9 @@ const mockData: FermentableLineItem[] = [
     datePurchased: new Date('2024-02-20'),
     fermentable: {
       id: 'F002',
-      type: 'sugar',
+      name: 'Caramel 60L',
+      format: 'malt',
+      gravityUnits: 1.034,
     },
   },
   {
@@ -40,7 +44,9 @@ const mockData: FermentableLineItem[] = [
     datePurchased: new Date('2024-03-10'),
     fermentable: {
       id: 'F003',
-      type: 'malt extract',
+      name: 'Light Malt Extract',
+      format: 'extract',
+      gravityUnits: 1.044,
     },
   },
 ];
@@ -48,15 +54,20 @@ const mockData: FermentableLineItem[] = [
 const columnHelper = createColumnHelper<FermentableLineItem>();
 
 const columns = [
-  columnHelper.accessor((row) => row.fermentable.id, {
-    id: 'fermentableId',
-    header: 'Fermentable ID',
+  columnHelper.accessor((row) => row.fermentable.name, {
+    id: 'fermentableName',
+    header: 'Name',
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor((row) => row.fermentable.type, {
-    id: 'fermentableType',
-    header: 'Fermentable Type',
+  columnHelper.accessor((row) => row.fermentable.format, {
+    id: 'fermentableFormat',
+    header: 'Format',
     cell: (info) => info.getValue(),
+  }),
+  columnHelper.accessor((row) => row.fermentable.gravityUnits, {
+    id: 'gravityUnits',
+    header: 'Gravity Units',
+    cell: (info) => info.getValue().toFixed(3),
   }),
   columnHelper.accessor('datePurchased', {
     header: 'Date Purchased',

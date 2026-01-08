@@ -68,8 +68,8 @@ export const theme = createTheme({
       dark: '#42a5f5',
     },
     background: {
-      default: '#0d0d0d', // Darker background like Linear
-      paper: '#181818', // Slightly lighter for cards/papers
+      default: '#050505', // Near-black background
+      paper: '#0a0a0a', // Slightly lighter for cards/papers
     },
     text: {
       primary: '#f5f5f5', // Off-white for readability
@@ -80,8 +80,8 @@ export const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: '#0d0d0d',
-          borderBottom: '1px solid #262626',
+          backgroundColor: '#050505',
+          borderBottom: '1px solid #1a1a1a',
           backdropFilter: 'blur(8px)',
         },
       },
@@ -89,8 +89,8 @@ export const theme = createTheme({
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          backgroundColor: '#0d0d0d',
-          borderRight: '1px solid #262626',
+          backgroundColor: '#050505',
+          borderRight: '1px solid #1a1a1a',
         },
       },
     },
@@ -101,13 +101,13 @@ export const theme = createTheme({
           borderRadius: '6px',
           margin: '2px 8px',
           '&:hover': {
-            backgroundColor: '#262626',
+            backgroundColor: '#1a1a1a',
           },
           '&.Mui-selected': {
-            backgroundColor: '#1a1a1a',
+            backgroundColor: '#0f0f0f',
             borderLeft: '2px solid',
             '&:hover': {
-              backgroundColor: '#262626',
+              backgroundColor: '#1a1a1a',
             },
           },
         },
@@ -134,6 +134,34 @@ export const theme = createTheme({
           '&:hover': {
             boxShadow: '0 0 15px currentColor',
           },
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          padding: '20px 16px',
+          borderBottom: '1px solid #1a1a1a',
+        },
+        head: {
+          fontWeight: 600,
+          backgroundColor: '#0a0a0a',
+        },
+      },
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: '#0f0f0f',
+          },
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
         },
       },
     },
