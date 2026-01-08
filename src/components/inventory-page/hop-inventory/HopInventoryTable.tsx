@@ -46,16 +46,16 @@ export default function HopInventoryTable() {
 
   const [widgets, setWidgets] = useState<Widget[]>([
     {
-      id: "aroma-hops-donut",
-      label: "Aroma Hops",
+      id: 'aroma-hops-donut',
+      label: 'Aroma Hops',
       visible: true,
-      component: <AromaHopsDonutChart />
-    }
+      component: <AromaHopsDonutChart />,
+    },
   ]);
 
   const handleToggleWidget = (id: string, visible: boolean) => {
-    setWidgets(prevWidgets =>
-      prevWidgets.map(widget =>
+    setWidgets((prevWidgets) =>
+      prevWidgets.map((widget) =>
         widget.id === id ? { ...widget, visible } : widget
       )
     );
@@ -98,8 +98,8 @@ export default function HopInventoryTable() {
   }, []);
 
   const table = useReactTable({
-    data: hopInventoryRecords.flatMap<HopTableRow>(record =>
-      record.lineItems.map(lineItem => ({
+    data: hopInventoryRecords.flatMap<HopTableRow>((record) =>
+      record.lineItems.map((lineItem) => ({
         ...lineItem,
         hop: record.item,
       }))
@@ -139,13 +139,24 @@ export default function HopInventoryTable() {
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableCell key={header.id} align={(header.column.columnDef.meta as TableMeta)?.align || 'left'}>
+                    <TableCell
+                      key={header.id}
+                      align={
+                        (header.column.columnDef.meta as TableMeta)?.align ||
+                        'left'
+                      }
+                    >
                       {header.isPlaceholder ? null : header.column.getCanSort() ? (
                         <TableSortLabel
                           active={!!header.column.getIsSorted()}
-                          direction={header.column.getIsSorted() === 'desc' ? 'desc' : 'asc'}
+                          direction={
+                            header.column.getIsSorted() === 'desc'
+                              ? 'desc'
+                              : 'asc'
+                          }
                           onClick={(event) => {
-                            const handler = header.column.getToggleSortingHandler();
+                            const handler =
+                              header.column.getToggleSortingHandler();
                             if (handler) {
                               handler(event);
                             }
@@ -179,11 +190,20 @@ export default function HopInventoryTable() {
                   <TableRow
                     key={row.id}
                     sx={{
-                      backgroundColor: getTableRowColorByDatePurchased(theme, row.original.datePurchased),
+                      backgroundColor: getTableRowColorByDatePurchased(
+                        theme,
+                        row.original.datePurchased
+                      ),
                     }}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} align={(cell.column.columnDef.meta as TableMeta)?.align || 'left'}>
+                      <TableCell
+                        key={cell.id}
+                        align={
+                          (cell.column.columnDef.meta as TableMeta)?.align ||
+                          'left'
+                        }
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

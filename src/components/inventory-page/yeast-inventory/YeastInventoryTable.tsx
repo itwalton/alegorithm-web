@@ -163,14 +163,22 @@ export default function YeastInventoryTable() {
                   {headerGroup.headers.map((header) => (
                     <TableCell
                       key={header.id}
-                      align={(header.column.columnDef.meta as TableMeta)?.align || 'left'}
+                      align={
+                        (header.column.columnDef.meta as TableMeta)?.align ||
+                        'left'
+                      }
                     >
                       {header.isPlaceholder ? null : header.column.getCanSort() ? (
                         <TableSortLabel
                           active={!!header.column.getIsSorted()}
-                          direction={header.column.getIsSorted() === 'desc' ? 'desc' : 'asc'}
+                          direction={
+                            header.column.getIsSorted() === 'desc'
+                              ? 'desc'
+                              : 'asc'
+                          }
                           onClick={(event) => {
-                            const handler = header.column.getToggleSortingHandler();
+                            const handler =
+                              header.column.getToggleSortingHandler();
                             if (handler) {
                               handler(event);
                             }
@@ -182,10 +190,16 @@ export default function YeastInventoryTable() {
                             },
                           }}
                         >
-                          {flexRender(header.column.columnDef.header, header.getContext())}
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                         </TableSortLabel>
                       ) : (
-                        flexRender(header.column.columnDef.header, header.getContext())
+                        flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )
                       )}
                     </TableCell>
                   ))}
@@ -207,9 +221,15 @@ export default function YeastInventoryTable() {
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
                         key={cell.id}
-                        align={(cell.column.columnDef.meta as TableMeta)?.align || 'left'}
+                        align={
+                          (cell.column.columnDef.meta as TableMeta)?.align ||
+                          'left'
+                        }
                       >
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
                       </TableCell>
                     ))}
                   </TableRow>

@@ -94,10 +94,7 @@ export default function YeastFormatBarChart() {
                 color: theme.palette.text.primary,
               }}
             />
-            <Bar
-              dataKey="count"
-              fill={theme.palette.warning.main}
-            />
+            <Bar dataKey="count" fill={theme.palette.warning.main} />
           </BarChart>
         </ResponsiveContainer>
       </Box>

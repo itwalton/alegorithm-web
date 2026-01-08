@@ -1,15 +1,34 @@
-import { useState, useMemo } from "react";
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box, TextField, TableSortLabel } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, getFilteredRowModel, getSortedRowModel, type SortingState } from "@tanstack/react-table";
-import useGetFermentableInventoryRecords from "./useGetFermentableInventoryRecords";
-import type { Fermentable } from "./fermentable-inventory.model";
-import type { LineItem } from "../inventory.type";
-import InventoryOnHandTimeseriesChart from "./charts/InventoryOnHandTimeseriesChart";
-import type { Widget } from "../shared/widgets/widgets.model";
-import Widgets from "../shared/widgets/Widgets";
-import { getTableRowColorByDatePurchased } from "../shared/styling.utils";
-import { upperFirst } from "lodash";
+import { useState, useMemo } from 'react';
+import {
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Box,
+  TextField,
+  TableSortLabel,
+} from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+  getFilteredRowModel,
+  getSortedRowModel,
+  type SortingState,
+} from '@tanstack/react-table';
+import useGetFermentableInventoryRecords from './useGetFermentableInventoryRecords';
+import type { Fermentable } from './fermentable-inventory.model';
+import type { LineItem } from '../inventory.type';
+import InventoryOnHandTimeseriesChart from './charts/InventoryOnHandTimeseriesChart';
+import type { Widget } from '../shared/widgets/widgets.model';
+import Widgets from '../shared/widgets/Widgets';
+import { getTableRowColorByDatePurchased } from '../shared/styling.utils';
+import { upperFirst } from 'lodash';
 
 type FermentableTableRow = LineItem & {
   fermentable: Fermentable;
@@ -17,26 +36,27 @@ type FermentableTableRow = LineItem & {
 
 export default function FermentableInventoryTable() {
   const theme = useTheme();
-  const { data: fermentableInventoryRecords } = useGetFermentableInventoryRecords();
+  const { data: fermentableInventoryRecords } =
+    useGetFermentableInventoryRecords();
   const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const [widgets, setWidgets] = useState<Widget[]>([
     {
-      id: "inventory-on-hand",
-      label: "Inventory on Hand",
+      id: 'inventory-on-hand',
+      label: 'Inventory on Hand',
       visible: true,
-      component: <InventoryOnHandTimeseriesChart />
-    }
+      component: <InventoryOnHandTimeseriesChart />,
+    },
   ]);
 
   const handleToggleWidget = (id: string, visible: boolean) => {
-    setWidgets(prevWidgets =>
-      prevWidgets.map(widget =>
+    setWidgets((prevWidgets) =>
+      prevWidgets.map((widget) =>
         widget.id === id ? { ...widget, visible } : widget
       )
     );
-  }
+  };
 
   const columns = useMemo(() => {
     const columnHelper = createColumnHelper<FermentableTableRow>();
@@ -78,8 +98,8 @@ export default function FermentableInventoryTable() {
   }, []);
 
   const fermentableTable = useReactTable({
-    data: fermentableInventoryRecords.flatMap<FermentableTableRow>(record =>
-      record.lineItems.map(lineItem => ({
+    data: fermentableInventoryRecords.flatMap<FermentableTableRow>((record) =>
+      record.lineItems.map((lineItem) => ({
         ...lineItem,
         fermentable: record.item,
       }))
@@ -123,9 +143,14 @@ export default function FermentableInventoryTable() {
                       {header.isPlaceholder ? null : header.column.getCanSort() ? (
                         <TableSortLabel
                           active={!!header.column.getIsSorted()}
-                          direction={header.column.getIsSorted() === 'desc' ? 'desc' : 'asc'}
+                          direction={
+                            header.column.getIsSorted() === 'desc'
+                              ? 'desc'
+                              : 'asc'
+                          }
                           onClick={(event) => {
-                            const handler = header.column.getToggleSortingHandler();
+                            const handler =
+                              header.column.getToggleSortingHandler();
                             if (handler) {
                               handler(event);
                             }
@@ -159,7 +184,10 @@ export default function FermentableInventoryTable() {
                   <TableRow
                     key={row.id}
                     sx={{
-                      backgroundColor: getTableRowColorByDatePurchased(theme, row.original.datePurchased),
+                      backgroundColor: getTableRowColorByDatePurchased(
+                        theme,
+                        row.original.datePurchased
+                      ),
                     }}
                   >
                     {row.getVisibleCells().map((cell) => (

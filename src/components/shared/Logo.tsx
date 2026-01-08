@@ -5,7 +5,14 @@ export default function Logo() {
   const theme = useTheme();
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, position: 'relative' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1.5,
+        position: 'relative',
+      }}
+    >
       <svg
         width="40"
         height="48"
@@ -27,9 +34,21 @@ export default function Logo() {
         {/* Beer liquid with gradient */}
         <defs>
           <linearGradient id="beerGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor={theme.palette.secondary.main} stopOpacity="0.8" />
-            <stop offset="50%" stopColor={theme.palette.primary.main} stopOpacity="0.6" />
-            <stop offset="100%" stopColor={theme.palette.secondary.main} stopOpacity="0.9" />
+            <stop
+              offset="0%"
+              stopColor={theme.palette.secondary.main}
+              stopOpacity="0.8"
+            />
+            <stop
+              offset="50%"
+              stopColor={theme.palette.primary.main}
+              stopOpacity="0.6"
+            />
+            <stop
+              offset="100%"
+              stopColor={theme.palette.secondary.main}
+              stopOpacity="0.9"
+            />
           </linearGradient>
         </defs>
 
@@ -57,9 +76,27 @@ export default function Logo() {
         />
 
         {/* Bubbles */}
-        <circle cx="16" cy="32" r="1.5" fill={theme.palette.secondary.main} opacity="0.6" />
-        <circle cx="22" cy="28" r="1" fill={theme.palette.secondary.main} opacity="0.5" />
-        <circle cx="18" cy="35" r="1" fill={theme.palette.primary.main} opacity="0.4" />
+        <circle
+          cx="16"
+          cy="32"
+          r="1.5"
+          fill={theme.palette.secondary.main}
+          opacity="0.6"
+        />
+        <circle
+          cx="22"
+          cy="28"
+          r="1"
+          fill={theme.palette.secondary.main}
+          opacity="0.5"
+        />
+        <circle
+          cx="18"
+          cy="35"
+          r="1"
+          fill={theme.palette.primary.main}
+          opacity="0.4"
+        />
 
         {/* Glass handle */}
         <path
@@ -103,10 +140,28 @@ export default function Logo() {
           }}
         >
           <defs>
-            <linearGradient id="fluidGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor={theme.palette.secondary.main} stopOpacity="0.8" />
-              <stop offset="50%" stopColor={theme.palette.primary.main} stopOpacity="0.9" />
-              <stop offset="100%" stopColor={theme.palette.secondary.main} stopOpacity="0.8" />
+            <linearGradient
+              id="fluidGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="0%"
+            >
+              <stop
+                offset="0%"
+                stopColor={theme.palette.secondary.main}
+                stopOpacity="0.8"
+              />
+              <stop
+                offset="50%"
+                stopColor={theme.palette.primary.main}
+                stopOpacity="0.9"
+              />
+              <stop
+                offset="100%"
+                stopColor={theme.palette.secondary.main}
+                stopOpacity="0.8"
+              />
             </linearGradient>
           </defs>
 
@@ -123,9 +178,27 @@ export default function Logo() {
           />
 
           {/* Drips */}
-          <circle cx="20" cy="6" r="1" fill={theme.palette.secondary.main} opacity="0.7" />
-          <circle cx="60" cy="6" r="1" fill={theme.palette.primary.main} opacity="0.6" />
-          <circle cx="100" cy="6" r="1" fill={theme.palette.secondary.main} opacity="0.7" />
+          <circle
+            cx="20"
+            cy="6"
+            r="1"
+            fill={theme.palette.secondary.main}
+            opacity="0.7"
+          />
+          <circle
+            cx="60"
+            cy="6"
+            r="1"
+            fill={theme.palette.primary.main}
+            opacity="0.6"
+          />
+          <circle
+            cx="100"
+            cy="6"
+            r="1"
+            fill={theme.palette.secondary.main}
+            opacity="0.7"
+          />
         </svg>
       </Box>
     </Box>

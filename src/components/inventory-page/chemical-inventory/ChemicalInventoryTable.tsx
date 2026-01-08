@@ -28,6 +28,7 @@ import type { Widget } from '../shared/widgets/widgets.model';
 import Widgets from '../shared/widgets/Widgets';
 import { getTableRowColorByDatePurchased } from '../shared/styling.utils';
 import type { LineItem } from '../inventory.type';
+import { upperFirst } from 'lodash';
 
 type ChemicalTableRow = LineItem & {
   chemical: Chemical;
@@ -41,16 +42,16 @@ export default function ChemicalInventoryPage() {
 
   const [widgets, setWidgets] = useState<Widget[]>([
     {
-      id: "water-chemicals-warnings",
-      label: "Water Chemicals Warnings",
+      id: 'water-chemicals-warnings',
+      label: 'Water Chemicals Warnings',
       visible: true,
-      component: <WaterChemicalsWarningsList />
-    }
+      component: <WaterChemicalsWarningsList />,
+    },
   ]);
 
   const handleToggleWidget = (id: string, visible: boolean) => {
-    setWidgets(prevWidgets =>
-      prevWidgets.map(widget =>
+    setWidgets((prevWidgets) =>
+      prevWidgets.map((widget) =>
         widget.id === id ? { ...widget, visible } : widget
       )
     );
@@ -60,15 +61,15 @@ export default function ChemicalInventoryPage() {
     const columnHelper = createColumnHelper<ChemicalTableRow>();
     return [
       columnHelper.accessor((row) => row.chemical.name, {
-        id: 'chemicalName',
+        id: 'name',
         header: 'Name',
-        cell: (info) => info.getValue(),
+        cell: (info) => upperFirst(info.getValue()),
         enableSorting: true,
       }),
       columnHelper.accessor((row) => row.chemical.format, {
-        id: 'chemicalFormat',
+        id: 'format',
         header: 'Format',
-        cell: (info) => info.getValue(),
+        cell: (info) => upperFirst(info.getValue()),
         enableSorting: true,
       }),
       columnHelper.accessor((row) => row.amount, {
@@ -90,8 +91,8 @@ export default function ChemicalInventoryPage() {
   }, []);
 
   const table = useReactTable({
-    data: chemicalInventoryRecords.flatMap<ChemicalTableRow>(record =>
-      record.lineItems.map(lineItem => ({
+    data: chemicalInventoryRecords.flatMap<ChemicalTableRow>((record) =>
+      record.lineItems.map((lineItem) => ({
         ...lineItem,
         chemical: record.item,
       }))
@@ -135,9 +136,14 @@ export default function ChemicalInventoryPage() {
                       {header.isPlaceholder ? null : header.column.getCanSort() ? (
                         <TableSortLabel
                           active={!!header.column.getIsSorted()}
-                          direction={header.column.getIsSorted() === 'desc' ? 'desc' : 'asc'}
+                          direction={
+                            header.column.getIsSorted() === 'desc'
+                              ? 'desc'
+                              : 'asc'
+                          }
                           onClick={(event) => {
-                            const handler = header.column.getToggleSortingHandler();
+                            const handler =
+                              header.column.getToggleSortingHandler();
                             if (handler) {
                               handler(event);
                             }
@@ -171,7 +177,10 @@ export default function ChemicalInventoryPage() {
                   <TableRow
                     key={row.id}
                     sx={{
-                      backgroundColor: getTableRowColorByDatePurchased(theme, row.original.datePurchased),
+                      backgroundColor: getTableRowColorByDatePurchased(
+                        theme,
+                        row.original.datePurchased
+                      ),
                     }}
                   >
                     {row.getVisibleCells().map((cell) => (

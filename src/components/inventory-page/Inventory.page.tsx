@@ -1,9 +1,5 @@
 import { useState } from 'react';
-import {
-  Box,
-  Button,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { GiWheat, GiHops, GiMicroscope } from 'react-icons/gi';
 import { MdScience } from 'react-icons/md';
@@ -13,16 +9,17 @@ import ChemicalInventoryTable from './chemical-inventory/ChemicalInventoryTable'
 import YeastInventoryTable from './yeast-inventory/YeastInventoryTable';
 
 const InventoryCategory = {
-  fermentables: "fermentables",
-  hops: "hops",
-  yeast: "yeast",
-  chemicals: "chemicals",
+  fermentables: 'fermentables',
+  hops: 'hops',
+  yeast: 'yeast',
+  chemicals: 'chemicals',
 } as const;
 
 export default function InventoryPage() {
   const theme = useTheme();
-  const [selectedCategory, setSelectedCategory] =
-    useState<typeof InventoryCategory[keyof typeof InventoryCategory]>(InventoryCategory.fermentables);
+  const [selectedCategory, setSelectedCategory] = useState<
+    (typeof InventoryCategory)[keyof typeof InventoryCategory]
+  >(InventoryCategory.fermentables);
 
   const categories = [
     {
@@ -54,26 +51,30 @@ export default function InventoryPage() {
   const renderTable = () => {
     switch (selectedCategory) {
       case InventoryCategory.fermentables:
-        return <FermentableInventoryTable />
+        return <FermentableInventoryTable />;
       case InventoryCategory.hops:
-        return <HopInventoryTable />
+        return <HopInventoryTable />;
       case InventoryCategory.yeast:
-        return <YeastInventoryTable />
+        return <YeastInventoryTable />;
       case InventoryCategory.chemicals:
-        return <ChemicalInventoryTable />
+        return <ChemicalInventoryTable />;
     }
   };
 
   return (
     <Box>
-      <Typography variant="h4" sx={{ mb: 3 }}>Inventory</Typography>
+      <Typography variant="h4" sx={{ mb: 3 }}>
+        Inventory
+      </Typography>
 
       <Box sx={{ mb: 3, display: 'flex', gap: 2 }}>
         {categories.map((category) => (
           <Button
             fullWidth
             key={category.id}
-            variant={selectedCategory === category.id ? 'contained' : 'outlined'}
+            variant={
+              selectedCategory === category.id ? 'contained' : 'outlined'
+            }
             onClick={() => setSelectedCategory(category.id)}
             startIcon={category.icon}
             sx={{
@@ -84,7 +85,9 @@ export default function InventoryPage() {
                   ? theme.palette.getContrastText(category.color)
                   : category.color,
               backgroundColor:
-                selectedCategory === category.id ? category.color : 'transparent',
+                selectedCategory === category.id
+                  ? category.color
+                  : 'transparent',
             }}
           >
             {category.label}
@@ -92,9 +95,7 @@ export default function InventoryPage() {
         ))}
       </Box>
 
-      <Box>
-        {renderTable()}
-      </Box>
+      <Box>{renderTable()}</Box>
     </Box>
   );
 }
