@@ -6,8 +6,6 @@ export interface Chemical {
   id: string;
   name: string;
   format: ChemicalFormat;
-  quantity?: number;
-  volume?: number;
 }
 
 export interface ChemicalLineItem extends LineItem {

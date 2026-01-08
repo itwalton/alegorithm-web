@@ -26,18 +26,7 @@ import useGetChemicalInventory from './useGetChemicalInventory';
 import WaterChemicalsWarningsList from './charts/WaterChemicalsWarningsList';
 import type { Widget } from '../shared/widgets/widgets.model';
 import Widgets from '../shared/widgets/Widgets';
-
-const getRowBackgroundColor = (datePurchased: Date, theme: any) => {
-  const now = new Date();
-  const monthsDiff = (now.getTime() - datePurchased.getTime()) / (1000 * 60 * 60 * 24 * 30);
-
-  if (monthsDiff > 12) {
-    return `${theme.palette.error.main}15`; // Red hue with 15% opacity
-  } else if (monthsDiff > 6) {
-    return `${theme.palette.secondary.main}15`; // Yellow hue with 15% opacity
-  }
-  return 'transparent';
-};
+import { getTableRowColorByDatePurchased } from '../shared/styling.utils';
 
 export default function ChemicalInventoryPage() {
   const theme = useTheme();
@@ -77,17 +66,14 @@ export default function ChemicalInventoryPage() {
         cell: (info) => info.getValue(),
         enableSorting: true,
       }),
-      columnHelper.accessor((row) => row.chemical.quantity, {
-        id: 'quantity',
-        header: 'Quantity (g)',
-        cell: (info) => info.getValue() ?? '-',
-        enableSorting: true,
-      }),
-      columnHelper.accessor((row) => row.chemical.volume, {
-        id: 'volume',
-        header: 'Volume (ml)',
-        cell: (info) => info.getValue() ?? '-',
-        enableSorting: true,
+      columnHelper.accessor((row) => row.amount, {
+        id: 'amount',
+        header: 'Amount',
+        cell: (info) => {
+          const amount = info.getValue();
+          return `${amount.value} ${amount.unit}`;
+        },
+        enableSorting: false,
       }),
       columnHelper.accessor('datePurchased', {
         id: 'datePurchased',
@@ -112,6 +98,7 @@ export default function ChemicalInventoryPage() {
     },
     onGlobalFilterChange: setGlobalFilter,
     onSortingChange: setSorting,
+    enableSortingRemoval: false,
     autoResetAll: false,
   });
 
@@ -119,7 +106,7 @@ export default function ChemicalInventoryPage() {
     <Box>
       <Widgets widgets={widgets} onToggleWidget={handleToggleWidget} />
 
-      <Paper sx={{ borderRadius: 2, backgroundColor: '#0a0a0a', paddingY: 2, paddingX: 2, minHeight: 400 }}>
+      <Paper sx={{ borderRadius: 2, paddingY: 2, paddingX: 2, minHeight: 400 }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <TextField
             size="small"
@@ -127,19 +114,6 @@ export default function ChemicalInventoryPage() {
             placeholder="Search..."
             value={globalFilter ?? ''}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            sx={{
-              width: '33.333%',
-              '& .MuiOutlinedInput-root': {
-                backgroundColor: '#050505',
-                borderRadius: 1,
-                '& fieldset': {
-                  borderColor: '#1a1a1a',
-                },
-                '&:hover fieldset': {
-                  borderColor: '#2a2a2a',
-                },
-              },
-            }}
           />
         </Box>
 
@@ -185,17 +159,11 @@ export default function ChemicalInventoryPage() {
             </TableHead>
             <TableBody>
               {table.getRowModel().rows.map((row) => {
-                const backgroundColor = getRowBackgroundColor(row.original.datePurchased, theme);
                 return (
                   <TableRow
                     key={row.id}
                     sx={{
-                      backgroundColor,
-                      '&:hover': {
-                        backgroundColor: backgroundColor !== 'transparent'
-                          ? `${backgroundColor}cc`
-                          : '#0f0f0f',
-                      },
+                      backgroundColor: getTableRowColorByDatePurchased(theme, row.original.datePurchased),
                     }}
                   >
                     {row.getVisibleCells().map((cell) => (

@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { upperFirst } from 'lodash';
 import {
   Table,
   TableBody,
@@ -26,18 +27,7 @@ import useGetHopInventory from './useGetHopInventory';
 import AromaHopsDonutChart from './charts/AromaHopsDonutChart';
 import type { Widget } from '../shared/widgets/widgets.model';
 import Widgets from '../shared/widgets/Widgets';
-
-const getRowBackgroundColor = (datePurchased: Date, theme: any) => {
-  const now = new Date();
-  const monthsDiff = (now.getTime() - datePurchased.getTime()) / (1000 * 60 * 60 * 24 * 30);
-
-  if (monthsDiff > 12) {
-    return `${theme.palette.error.main}15`; // Red hue with 15% opacity
-  } else if (monthsDiff > 6) {
-    return `${theme.palette.secondary.main}15`; // Yellow hue with 15% opacity
-  }
-  return 'transparent';
-};
+import { getTableRowColorByDatePurchased } from '../shared/styling.utils';
 
 export default function HopInventoryTable() {
   const theme = useTheme();
@@ -66,28 +56,41 @@ export default function HopInventoryTable() {
     const columnHelper = createColumnHelper<HopLineItem>();
     return [
       columnHelper.accessor((row) => row.hop.name, {
-        id: 'hopName',
+        id: 'name',
         header: 'Name',
-        cell: (info) => info.getValue(),
+        cell: (info) => upperFirst(info.getValue()),
         enableSorting: true,
       }),
-      columnHelper.accessor((row) => row.hop.purpose, {
-        id: 'hopPurpose',
-        header: 'Purpose',
-        cell: (info) => info.getValue(),
+      columnHelper.accessor((row) => row.hop.usage, {
+        id: 'usage',
+        header: 'Usage',
+        cell: (info) => info.getValue().map(upperFirst).join(', '),
         enableSorting: true,
+        meta: { align: 'center' },
       }),
-      columnHelper.accessor('datePurchased', {
-        id: 'datePurchased',
-        header: 'Date Purchased',
-        cell: (info) => info.getValue().toLocaleDateString(),
-        enableSorting: true,
+      columnHelper.accessor((row) => row.amount, {
+        id: 'amount',
+        header: 'Amount',
+        cell: (info) => {
+          const amount = info.getValue();
+          return `${amount.value} ${amount.unit}`;
+        },
+        enableSorting: false,
+        meta: { align: 'center' },
       }),
       columnHelper.accessor((row) => row.hop.dateHarvested, {
         id: 'dateHarvested',
         header: 'Date Harvested',
         cell: (info) => info.getValue()?.toLocaleDateString() ?? '-',
         enableSorting: true,
+        meta: { align: 'center' },
+      }),
+      columnHelper.accessor('datePurchased', {
+        id: 'datePurchased',
+        header: 'Date Purchased',
+        cell: (info) => info.getValue().toLocaleDateString(),
+        enableSorting: true,
+        meta: { align: 'center' },
       }),
     ];
   }, []);
@@ -106,6 +109,7 @@ export default function HopInventoryTable() {
     },
     onGlobalFilterChange: setGlobalFilter,
     onSortingChange: setSorting,
+    enableSortingRemoval: false,
     autoResetAll: false,
   });
 
@@ -113,7 +117,7 @@ export default function HopInventoryTable() {
     <Box>
       <Widgets widgets={widgets} onToggleWidget={handleToggleWidget} />
 
-      <Paper sx={{ borderRadius: 2, backgroundColor: '#0a0a0a', paddingY: 2, paddingX: 2, minHeight: 400 }}>
+      <Paper sx={{ borderRadius: 2, paddingY: 2, paddingX: 2, minHeight: 400 }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <TextField
             size="small"
@@ -121,19 +125,6 @@ export default function HopInventoryTable() {
             placeholder="Search..."
             value={globalFilter ?? ''}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            sx={{
-              width: '33.333%',
-              '& .MuiOutlinedInput-root': {
-                backgroundColor: '#050505',
-                borderRadius: 1,
-                '& fieldset': {
-                  borderColor: '#1a1a1a',
-                },
-                '&:hover fieldset': {
-                  borderColor: '#2a2a2a',
-                },
-              },
-            }}
           />
         </Box>
 
@@ -143,7 +134,7 @@ export default function HopInventoryTable() {
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableCell key={header.id}>
+                    <TableCell key={header.id} align={(header.column.columnDef.meta as any)?.align || 'left'}>
                       {header.isPlaceholder ? null : header.column.getCanSort() ? (
                         <TableSortLabel
                           active={!!header.column.getIsSorted()}
@@ -179,21 +170,15 @@ export default function HopInventoryTable() {
             </TableHead>
             <TableBody>
               {table.getRowModel().rows.map((row) => {
-                const backgroundColor = getRowBackgroundColor(row.original.datePurchased, theme);
                 return (
                   <TableRow
                     key={row.id}
                     sx={{
-                      backgroundColor,
-                      '&:hover': {
-                        backgroundColor: backgroundColor !== 'transparent'
-                          ? `${backgroundColor}cc`
-                          : '#0f0f0f',
-                      },
+                      backgroundColor: getTableRowColorByDatePurchased(theme, row.original.datePurchased),
                     }}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell key={cell.id} align={(cell.column.columnDef.meta as any)?.align || 'left'}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

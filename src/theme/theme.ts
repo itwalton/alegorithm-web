@@ -165,5 +165,19 @@ export const theme = createTheme({
         },
       },
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#050505',
+          borderRadius: '4px',
+          '& fieldset': {
+            borderColor: '#1a1a1a',
+          },
+          '&:hover fieldset': {
+            borderColor: '#2a2a2a',
+          },
+        },
+      },
+    },
   },
 });

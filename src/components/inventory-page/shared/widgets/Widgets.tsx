@@ -21,15 +21,23 @@ export default function Widgets({ widgets, onToggleWidget }: WidgetProps) {
   };
 
   return (
-    <Box>
-      <Box sx={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
-        <Tooltip title="Widget Settings">
+    <Box sx={{ display: "flex", alignItems: "flex-start", mb: 3 }}>
+      <Grid container spacing={2} sx={{ flex: 1 }}>
+        {widgets.map(widget => widget.visible && (
+          <Grid size={4} key={widget.id}>
+            {widget.component}
+          </Grid>
+        ))}
+      </Grid>
+
+      <Tooltip title="Widget Settings">
           <IconButton
             color="inherit"
             aria-label="settings"
             onClick={handleMenuOpen}
             sx={{
               color: theme.palette.text.primary,
+              ml: 2,
               '&:hover': {
                 backgroundColor: 'rgba(255, 255, 255, 0.1)',
               },
@@ -66,15 +74,6 @@ export default function Widgets({ widgets, onToggleWidget }: WidgetProps) {
             </MenuItem>
           ))}
         </Menu>
-      </Box>
-
-      <Grid container spacing={2} sx={{ mb: 3 }}>
-        {widgets.map(widget => widget.visible && (
-          <Grid size={4} key={widget.id}>
-            {widget.component}
-          </Grid>
-        ))}
-      </Grid>
     </Box>
   );
 }

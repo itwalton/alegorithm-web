@@ -7,18 +7,7 @@ import type { FermentableLineItem } from "./fermentable-inventory.model";
 import InventoryOnHandTimeseriesChart from "./charts/InventoryOnHandTimeseriesChart";
 import type { Widget } from "../shared/widgets/widgets.model";
 import Widgets from "../shared/widgets/Widgets";
-
-const getRowBackgroundColor = (datePurchased: Date, theme: any) => {
-  const now = new Date();
-  const monthsDiff = (now.getTime() - datePurchased.getTime()) / (1000 * 60 * 60 * 24 * 30);
-
-  if (monthsDiff > 12) {
-    return `${theme.palette.error.main}15`; // Red hue with 15% opacity
-  } else if (monthsDiff > 6) {
-    return `${theme.palette.secondary.main}15`; // Yellow hue with 15% opacity
-  }
-  return 'transparent';
-};
+import { getTableRowColorByDatePurchased } from "../shared/styling.utils";
 
 export default function FermentableInventoryTable() {
   const theme = useTheme();
@@ -52,9 +41,9 @@ export default function FermentableInventoryTable() {
         cell: (info) => info.getValue(),
         enableSorting: true,
       }),
-      columnHelper.accessor((row) => row.fermentable.format, {
-        id: 'fermentableFormat',
-        header: 'Format',
+      columnHelper.accessor((row) => row.fermentable.type, {
+        id: 'FermentableType',
+        header: 'Type',
         cell: (info) => info.getValue(),
         enableSorting: true,
       }),
@@ -87,6 +76,7 @@ export default function FermentableInventoryTable() {
     },
     onGlobalFilterChange: setGlobalFilter,
     onSortingChange: setSorting,
+    enableSortingRemoval: false,
     autoResetAll: false,
   });
 
@@ -94,7 +84,7 @@ export default function FermentableInventoryTable() {
     <Box>
       <Widgets widgets={widgets} onToggleWidget={handleToggleWidget} />
 
-      <Paper sx={{ borderRadius: 2, backgroundColor: '#0a0a0a', paddingY: 2, paddingX: 2, minHeight: 400 }}>
+      <Paper sx={{ borderRadius: 2, paddingY: 2, paddingX: 2, minHeight: 400 }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <TextField
             size="small"
@@ -102,19 +92,6 @@ export default function FermentableInventoryTable() {
             placeholder="Search..."
             value={globalFilter ?? ''}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            sx={{
-              width: '33.333%',
-              '& .MuiOutlinedInput-root': {
-                backgroundColor: '#050505',
-                borderRadius: 1,
-                '& fieldset': {
-                  borderColor: '#1a1a1a',
-                },
-                '&:hover fieldset': {
-                  borderColor: '#2a2a2a',
-                },
-              },
-            }}
           />
         </Box>
 
@@ -160,17 +137,11 @@ export default function FermentableInventoryTable() {
             </TableHead>
             <TableBody>
               {fermentableTable.getRowModel().rows.map((row) => {
-                const backgroundColor = getRowBackgroundColor(row.original.datePurchased, theme);
                 return (
                   <TableRow
                     key={row.id}
                     sx={{
-                      backgroundColor,
-                      '&:hover': {
-                        backgroundColor: backgroundColor !== 'transparent'
-                          ? `${backgroundColor}cc`
-                          : '#0f0f0f',
-                      },
+                      backgroundColor: getTableRowColorByDatePurchased(theme, row.original.datePurchased),
                     }}
                   >
                     {row.getVisibleCells().map((cell) => (

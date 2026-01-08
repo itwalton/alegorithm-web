@@ -17,9 +17,10 @@ export default function useGetFermentableInventory(): FermentableInventoryRespon
         fermentable: {
           id: 'F001',
           name: 'Pale Ale Malt',
-          format: 'malt',
+          type: 'malt',
           gravityUnits: 1.037,
         },
+        amount: { value: 20, unit: 'lb' },
       },
       {
         id: '2',
@@ -27,9 +28,10 @@ export default function useGetFermentableInventory(): FermentableInventoryRespon
         fermentable: {
           id: 'F002',
           name: 'Caramel 60L',
-          format: 'malt',
+          type: 'malt',
           gravityUnits: 1.034,
         },
+        amount: { value: 5, unit: 'lb' },
       },
       {
         id: '3',
@@ -37,9 +39,10 @@ export default function useGetFermentableInventory(): FermentableInventoryRespon
         fermentable: {
           id: 'F003',
           name: 'Light Malt Extract',
-          format: 'extract',
+          type: 'extract',
           gravityUnits: 1.044,
         },
+        amount: { value: 1, unit: 'gallon' },
       },
       {
         id: '4',
@@ -47,9 +50,10 @@ export default function useGetFermentableInventory(): FermentableInventoryRespon
         fermentable: {
           id: 'F004',
           name: 'Carapils',
-          format: 'malt',
+          type: 'malt',
           gravityUnits: 1.033,
         },
+        amount: { value: 10, unit: 'lb' },
       },
       {
         id: '5',
@@ -57,9 +61,10 @@ export default function useGetFermentableInventory(): FermentableInventoryRespon
         fermentable: {
           id: 'F005',
           name: 'Table Sugar',
-          format: 'sugar',
+          type: 'sugar',
           gravityUnits: 1.046,
         },
+        amount: { value: 2, unit: 'lb' },
       },
       {
         id: '6',
@@ -67,9 +72,10 @@ export default function useGetFermentableInventory(): FermentableInventoryRespon
         fermentable: {
           id: 'F006',
           name: 'Munich Malt',
-          format: 'malt',
+          type: 'malt',
           gravityUnits: 1.037,
         },
+        amount: { value: 15, unit: 'lb' },
       },
       {
         id: '7',
@@ -77,9 +83,10 @@ export default function useGetFermentableInventory(): FermentableInventoryRespon
         fermentable: {
           id: 'F007',
           name: 'Wheat Malt',
-          format: 'malt',
+          type: 'malt',
           gravityUnits: 1.038,
         },
+        amount: { value: 8, unit: 'lb' },
       },
       {
         id: '8',
@@ -87,9 +94,10 @@ export default function useGetFermentableInventory(): FermentableInventoryRespon
         fermentable: {
           id: 'F008',
           name: 'Flaked Oats',
-          format: 'adjunct',
+          type: 'adjunct',
           gravityUnits: 1.033,
         },
+        amount: { value: 3, unit: 'lb' },
       },
     ],
     isLoading: false,

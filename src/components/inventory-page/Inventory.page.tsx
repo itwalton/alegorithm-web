@@ -75,13 +75,6 @@ export default function InventoryPage() {
                   : category.color,
               backgroundColor:
                 selectedCategory === category.id ? category.color : 'transparent',
-              '&:hover': {
-                borderColor: category.color,
-                backgroundColor:
-                  selectedCategory === category.id
-                    ? category.color
-                    : `${category.color}20`,
-              },
             }}
           >
             {category.label}
