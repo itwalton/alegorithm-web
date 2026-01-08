@@ -21,8 +21,9 @@ import {
   MdLogout,
   MdMenuBook,
   MdCalendarToday,
+  MdBarChart,
 } from 'react-icons/md';
-import { HiMenu, HiHome, HiCog } from 'react-icons/hi';
+import { HiMenu, HiCog } from 'react-icons/hi';
 import { Link, useLocation } from '@tanstack/react-router';
 import Logo from './Logo';
 
@@ -47,7 +48,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const location = useLocation();
 
   const navItems: NavItem[] = [
-    { label: 'Overview', path: '/', icon: <HiHome /> },
+    { label: 'Analytics', path: '/', icon: <MdBarChart /> },
     { label: 'Inventory', path: '/inventory', icon: <MdOutlineInventory /> },
     { label: 'Recipes', path: '/recipes', icon: <MdMenuBook /> },
     { label: 'Brew Days', path: '/brew-days', icon: <MdCalendarToday /> },
