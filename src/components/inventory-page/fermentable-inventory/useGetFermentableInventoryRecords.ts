@@ -1,10 +1,5 @@
+import type { Response } from '../../../shared/response.type';
 import type { FermentableInventoryRecord } from './fermentable-inventory.model';
-
-type Response<T> = {
-  data: T;
-  isLoading: boolean;
-  error: Error | null;
-};
 
 type FermentableInventoryResponse = Response<FermentableInventoryRecord[]>;
 

@@ -1,10 +1,5 @@
+import type { Response } from '../../../shared/response.type';
 import type { HopInventoryRecord } from './hop-inventory.model';
-
-type Response<T> = {
-  data: T;
-  isLoading: boolean;
-  error: Error | null;
-};
 
 type HopInventoryResponse = Response<HopInventoryRecord[]>;
 

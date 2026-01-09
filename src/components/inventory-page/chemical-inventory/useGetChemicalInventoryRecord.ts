@@ -1,10 +1,5 @@
+import type { Response } from '../../../shared/response.type';
 import type { ChemicalInventoryRecord } from './chemical-inventory.model';
-
-type Response<T> = {
-  data: T;
-  isLoading: boolean;
-  error: Error | null;
-};
 
 type ChemicalInventoryResponse = Response<ChemicalInventoryRecord[]>;
 

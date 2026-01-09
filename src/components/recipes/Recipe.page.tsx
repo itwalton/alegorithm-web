@@ -1,183 +1,270 @@
-import { Typography, Box, Card, CardContent, Chip, Grid, Button } from '@mui/material';
+import {
+  Typography,
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  Button,
+  IconButton,
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { MdAdd } from 'react-icons/md';
-import { type Recipe } from './recipe.model';
-
-const mockData: Recipe[] = [
-  {
-    id: 'R001',
-    name: 'West Coast IPA',
-    description:
-      'A classic West Coast IPA with bold hop flavors and a crisp, dry finish. Features Cascade, Centennial, and Simcoe hops for a citrusy, piney profile.',
-    dateAdded: new Date('2024-01-15'),
-    lastBrewed: new Date('2024-03-20'),
-    isPublic: true,
-    style: 'American IPA',
-    awards: ['Gold - 2023 State Fair', 'Best IPA - Local Competition'],
-    timesBrewed: 12,
-  },
-  {
-    id: 'R002',
-    name: 'Belgian Wit',
-    description:
-      'Refreshing Belgian-style wheat beer with coriander and orange peel. Light, hazy, and perfect for summer brewing.',
-    dateAdded: new Date('2024-02-10'),
-    lastBrewed: new Date('2024-04-05'),
-    isPublic: true,
-    style: 'Witbier',
-    awards: [],
-    timesBrewed: 8,
-  },
-  {
-    id: 'R003',
-    name: 'Chocolate Stout',
-    description:
-      'Rich and creamy sweet stout with notes of dark chocolate and coffee. Brewed with cacao nibs and lactose for a smooth, dessert-like finish.',
-    dateAdded: new Date('2024-03-05'),
-    isPublic: false,
-    style: 'Sweet Stout',
-    awards: ['Silver - Regional Brew Fest'],
-    timesBrewed: 5,
-  },
-  {
-    id: 'R004',
-    name: 'Summer Saison',
-    description:
-      'Farmhouse ale with fruity esters and peppery phenols. Dry, effervescent, and highly drinkable with a touch of spice.',
-    dateAdded: new Date('2024-04-12'),
-    lastBrewed: new Date('2024-06-15'),
-    isPublic: true,
-    style: 'Saison',
-    awards: [],
-    timesBrewed: 3,
-  },
-];
+import useGetRecipes from './useGetRecipes';
+import type { Recipe } from './recipe.model';
+import { useState } from 'react';
+import { PiPrinterDuotone } from 'react-icons/pi';
 
 export default function RecipePage() {
   const theme = useTheme();
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | undefined>();
+
+  const { data: recipes } = useGetRecipes();
+  if (recipes.length > 0 && !selectedRecipe) {
+    setSelectedRecipe(recipes[0]);
+  }
+
+  // Find the most popular recipe (highest timesBrewed)
+  const maxBrews = Math.max(...recipes.map((r) => r.timesBrewed));
 
   return (
-    <Box>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: 'calc(100vh - 164px)',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Header - Fixed at top */}
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           mb: 2,
+          flexShrink: 0,
         }}
       >
-        <Typography
-          variant="h4"
-          sx={{ color: theme.palette.primary.main }}
-        >
+        <Typography variant="h4" sx={{ color: theme.palette.primary.main }}>
           Recipes
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<MdAdd />}
-          sx={{ textTransform: 'none' }}
-        >
+        <Button variant="contained" color="primary" startIcon={<MdAdd />}>
           Add Recipe
         </Button>
       </Box>
-      <Typography variant="body1" gutterBottom sx={{ mb: 3 }}>
-        Manage your brewing recipes and track awards.
-      </Typography>
 
-      <Grid container spacing={3}>
-        {mockData.map((recipe) => (
-          <Grid size={4} key={recipe.id}>
-            <Card
-              sx={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                '&:hover': {
-                  boxShadow: 6,
-                },
-              }}
-            >
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Typography
-                  variant="h5"
-                  component="div"
-                  gutterBottom
-                  sx={{ color: theme.palette.primary.main }}
-                >
-                  {recipe.name}
-                </Typography>
+      {/* Two Column Layout */}
+      <Box sx={{ display: 'flex', gap: 3, flex: 1, minHeight: 0 }}>
+        {/* Left Column - Scrollable Recipe List */}
+        <Box
+          sx={{
+            width: 400,
+            display: 'flex',
+            flexDirection: 'column',
+            overflowY: 'auto',
+            flexShrink: 0,
+            gap: 1,
+            pr: 0.5,
+          }}
+        >
+          {recipes.map((recipe) => {
+            const isNew = !recipe.lastBrewed;
+            const isAwardWinning = recipe.awards.length > 0;
+            const isMostPopular = recipe.timesBrewed === maxBrews;
 
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ mb: 2 }}
-                >
-                  {recipe.description}
-                </Typography>
+            return (
+              <Card
+                key={recipe.id}
+                onClick={() => setSelectedRecipe(recipe)}
+                sx={{
+                  '&:hover': { cursor: 'pointer' },
+                  overflow: 'visible',
+                }}
+              >
+                <CardContent sx={{ padding: '0 !important' }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 1,
+                      padding: 2,
+                      borderRadius: 4,
+                      border:
+                        selectedRecipe?.id === recipe.id
+                          ? `1px solid ${theme.palette.primary.main}`
+                          : `1px solid ${theme.palette.divider}`,
+                    }}
+                  >
+                    <Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'flex-start',
+                        }}
+                      >
+                        <Typography variant="h6">{recipe.name}</Typography>
+                        <Chip
+                          label={recipe.isPublic ? 'Public' : 'Private'}
+                          color={recipe.isPublic ? 'success' : 'default'}
+                          size="small"
+                        />
+                      </Box>
 
-                <Box sx={{ mb: 1 }}>
-                  <Typography variant="body2" color="text.primary">
-                    <strong>Style:</strong> {recipe.style}
-                  </Typography>
-                </Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          mb: 2,
+                          gap: 2,
+                          flexWrap: 'wrap',
+                        }}
+                      >
+                        <Typography variant="caption" color="text.secondary">
+                          <strong>Style:</strong> {recipe.style}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          <strong>Brewed:</strong> {recipe.timesBrewed}x
+                        </Typography>
+                      </Box>
+                    </Box>
 
-                <Box sx={{ mb: 1 }}>
-                  <Typography variant="body2" color="text.primary">
-                    <strong>Times Brewed:</strong> {recipe.timesBrewed}
-                  </Typography>
-                </Box>
-
-                <Box sx={{ mb: 1 }}>
-                  <Typography variant="body2" color="text.primary">
-                    <strong>Last Brewed:</strong>{' '}
-                    {recipe.lastBrewed
-                      ? recipe.lastBrewed.toLocaleDateString()
-                      : 'Never'}
-                  </Typography>
-                </Box>
-
-                <Box sx={{ mb: 1 }}>
-                  <Typography variant="body2" color="text.primary">
-                    <strong>Date Added:</strong>{' '}
-                    {recipe.dateAdded.toLocaleDateString()}
-                  </Typography>
-                </Box>
-
-                <Box sx={{ mb: 2 }}>
-                  <Chip
-                    label={recipe.isPublic ? 'Public' : 'Private'}
-                    color={recipe.isPublic ? 'success' : 'default'}
-                    size="small"
-                  />
-                </Box>
-
-                {recipe.awards.length > 0 && (
-                  <Box>
                     <Typography
                       variant="body2"
-                      color="text.primary"
-                      sx={{ mb: 1 }}
+                      color="text.secondary"
+                      sx={{ mb: 1.5, fontSize: '0.875rem' }}
                     >
-                      <strong>Awards:</strong>
+                      {recipe.description}
                     </Typography>
-                    <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
-                      {recipe.awards.map((award, index) => (
+
+                    {/* Badges */}
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        gap: 0.5,
+                        mb: 1,
+                        flexWrap: 'wrap',
+                      }}
+                    >
+                      {isAwardWinning && (
                         <Chip
-                          key={index}
-                          label={award}
+                          label="Award-Winning"
                           size="small"
-                          color="primary"
+                          sx={{
+                            bgcolor: theme.palette.warning.main,
+                            color: theme.palette.getContrastText(
+                              theme.palette.warning.main
+                            ),
+                            fontWeight: 600,
+                          }}
                         />
-                      ))}
+                      )}
+                      {isNew && (
+                        <Chip
+                          label="New"
+                          size="small"
+                          sx={{
+                            bgcolor: theme.palette.info.main,
+                            color: theme.palette.getContrastText(
+                              theme.palette.info.main
+                            ),
+                            fontWeight: 600,
+                          }}
+                        />
+                      )}
+                      {isMostPopular && (
+                        <Chip
+                          label="Most Popular"
+                          size="small"
+                          sx={{
+                            bgcolor: theme.palette.primary.main,
+                            color: theme.palette.getContrastText(
+                              theme.palette.primary.main
+                            ),
+                            fontWeight: 600,
+                          }}
+                        />
+                      )}
                     </Box>
                   </Box>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </Box>
+
+        {/* Right Column - Details/Content Area */}
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            overflowY: 'auto',
+            pr: 1,
+          }}
+        >
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="h5" sx={{ color: theme.palette.primary.main }}>
+              {selectedRecipe ? selectedRecipe.name : ''}
+            </Typography>
+
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Button variant="contained" color="primary" startIcon={<MdAdd />}>
+                Edit
+              </Button>
+
+              <IconButton size="large" color="primary">
+                <PiPrinterDuotone />
+              </IconButton>
+            </Box>
+          </Box>
+
+          <Typography variant="body1">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat.
+          </Typography>
+          <Typography variant="body1">
+            Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+            cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum.
+          </Typography>
+          <Typography variant="body1">
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+            accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
+            quae ab illo inventore veritatis et quasi architecto beatae vitae
+            dicta sunt explicabo.
+          </Typography>
+          <Typography variant="body1">
+            Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut
+            fugit, sed quia consequuntur magni dolores eos qui ratione
+            voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
+            ipsum quia dolor sit amet, consectetur, adipisci velit.
+          </Typography>
+          <Typography variant="body1">
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui
+            blanditiis praesentium voluptatum deleniti atque corrupti quos
+            dolores et quas molestias excepturi sint occaecati cupiditate non
+            provident, similique sunt in culpa qui officia deserunt mollitia
+            animi, id est laborum et dolorum fuga.
+          </Typography>
+          <Typography variant="body1">
+            Et harum quidem rerum facilis est et expedita distinctio. Nam libero
+            tempore, cum soluta nobis est eligendi optio cumque nihil impedit
+            quo minus id quod maxime placeat facere possimus, omnis voluptas
+            assumenda est, omnis dolor repellendus.
+          </Typography>
+          <Typography variant="body1">
+            Temporibus autem quibusdam et aut officiis debitis aut rerum
+            necessitatibus saepe eveniet ut et voluptates repudiandae sint et
+            molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente
+            delectus, ut aut reiciendis voluptatibus maiores alias consequatur
+            aut perferendis doloribus asperiores repellat.
+          </Typography>
+        </Box>
+      </Box>
     </Box>
   );
 }
