@@ -32,7 +32,7 @@ export default function InventoryPage() {
       id: InventoryCategory.hops,
       label: 'Hops',
       icon: <GiHops size={20} />,
-      color: theme.palette.primary.main,
+      color: theme.palette.text.primary,
     },
     {
       id: InventoryCategory.yeast,

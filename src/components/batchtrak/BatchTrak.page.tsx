@@ -16,9 +16,9 @@ import {
   createColumnHelper,
   flexRender,
 } from '@tanstack/react-table';
-import { type BrewDay } from './brewday.model';
+import { type Batch } from './batch.model';
 
-const mockData: BrewDay[] = [
+const mockData: Batch[] = [
   {
     id: 'BD001',
     name: 'Spring IPA Brew',
@@ -39,7 +39,7 @@ const mockData: BrewDay[] = [
   },
 ];
 
-const columnHelper = createColumnHelper<BrewDay>();
+const columnHelper = createColumnHelper<Batch>();
 
 const columns = [
   columnHelper.accessor('name', {
@@ -56,9 +56,7 @@ const columns = [
   }),
 ];
 
-export default function BrewDaysPage() {
-  const theme = useTheme();
-
+export default function BatchTrakPage() {
   const table = useReactTable({
     data: mockData,
     columns,
@@ -67,15 +65,11 @@ export default function BrewDaysPage() {
 
   return (
     <Box>
-      <Typography
-        variant="h4"
-        gutterBottom
-        sx={{ color: theme.palette.primary.main }}
-      >
-        Brew Days
+      <Typography variant="h4" gutterBottom>
+        BatchTrak
       </Typography>
       <Typography variant="body1" gutterBottom>
-        Track your brewing sessions and brew days.
+        Track your brewing batches and sessions.
       </Typography>
       <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table>

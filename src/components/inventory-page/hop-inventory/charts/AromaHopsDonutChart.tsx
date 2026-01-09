@@ -31,7 +31,7 @@ export default function AromaHopsDonutChart() {
       <Typography
         variant="subtitle1"
         gutterBottom
-        sx={{ color: theme.palette.primary.main, fontSize: '0.875rem' }}
+        sx={{ fontSize: '0.875rem' }}
       >
         Aroma Hops Usage
       </Typography>

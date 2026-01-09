@@ -51,7 +51,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
     { label: 'Analytics', path: '/', icon: <MdBarChart /> },
     { label: 'Inventory', path: '/inventory', icon: <MdOutlineInventory /> },
     { label: 'Recipes', path: '/recipes', icon: <MdMenuBook /> },
-    { label: 'Brew Days', path: '/brew-days', icon: <MdCalendarToday /> },
+    { label: 'BatchTrak', path: '/batchtrak', icon: <MdCalendarToday /> },
   ];
 
   const handleDrawerToggle = () => {

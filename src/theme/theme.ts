@@ -43,6 +43,7 @@ export const theme = createTheme({
     button: {
       fontFamily: '"Gothic A1", sans-serif',
       fontWeight: 500,
+      textTransform: 'capitalize',
     },
   },
   palette: {
@@ -122,19 +123,12 @@ export const theme = createTheme({
     },
     MuiTypography: {
       styleOverrides: {
-        h6: {
-          textShadow: '0 0 10px currentColor',
-        },
+        h6: {},
       },
     },
     MuiButton: {
       styleOverrides: {
-        root: {
-          textShadow: '0 0 5px currentColor',
-          '&:hover': {
-            boxShadow: '0 0 15px currentColor',
-          },
-        },
+        root: {},
       },
     },
     MuiTableCell: {
